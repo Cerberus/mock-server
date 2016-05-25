@@ -7,7 +7,7 @@ module.exports = function(app) {
   .get(controller.getMocks)
   .post(controller.createMock);
 
-  app.route('/mock/:id')
+  app.route('/mocks/:id')
   .get(controller.getMock)
   .put(controller.editMock)
   .delete(controller.deleteMock);
