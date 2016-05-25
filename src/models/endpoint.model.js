@@ -6,9 +6,7 @@ const Schema = mongoose.Schema;
 let EndpointSchema = new Schema({
   name: {
     type: String,
-    required: true,
-    unique: true,
-    index: { unique: true }
+    required: true
   },
   method: {
     type: String,
