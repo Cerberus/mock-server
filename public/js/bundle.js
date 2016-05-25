@@ -80,6 +80,10 @@
 
 	var _show2 = _interopRequireDefault(_show);
 
+	var _new = __webpack_require__(280);
+
+	var _new2 = _interopRequireDefault(_new);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var loggerMiddleware = (0, _reduxLogger2.default)({
@@ -99,6 +103,7 @@
 	    _reactRouter.Router,
 	    { history: _reactRouter.browserHistory },
 	    _react2.default.createElement(_reactRouter.Route, { path: '/', component: _index2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/new', component: _new2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/:id', component: _show2.default })
 	  )
 	);
@@ -28043,7 +28048,7 @@
 	  MOCK_FETCHING_ERROR: 'MOCK_FETCHING_ERROR',
 	  MOCK_RECEIVED: 'MOCK_RECEIVED',
 	  MOCK_CREATED: 'MOCK_CREATED',
-	  MOCK_CREAT_ERROR: 'MOCK_CREATED_ERROR',
+	  MOCK_CREATE_ERROR: 'MOCK_CREATE_ERROR',
 	  MOCK_EDITED: 'MOCK_EDITED',
 	  MOCK_EDIT_ERROR: 'MOCK_EDIT_ERROR',
 	  MOCK_DELETED: 'MOCK_DELETED',
@@ -28105,6 +28110,19 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'columns' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'column col-md-12' },
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/new', className: 'btn' },
+	              'Create new Endpoint'
+	            )
+	          )
+	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'columns' },
@@ -28216,6 +28234,8 @@
 	});
 	exports.fetchMocks = fetchMocks;
 	exports.fetchMock = fetchMock;
+	exports.createMock = createMock;
+	exports.editMock = editMock;
 
 	var _constants = __webpack_require__(258);
 
@@ -28289,7 +28309,43 @@
 	      });
 	    });
 	  };
-	}
+	};
+
+	function createMock(data) {
+	  return function (dispatch) {
+
+	    console.log('createMock ===>');
+
+	    _axios2.default.post(_constants.API.mocks, data).then(function (result) {
+
+	      var response = result.data;
+
+	      console.log('inside result));');
+	      console.log(JSON.stringify(response));
+
+	      if (response.statusCode === 1000) {
+	        dispatch({
+	          type: _constants.Constants.MOCK_CREATED
+	        });
+	        dispatch((0, _reactRouterRedux.push)('/'));
+	      } else {
+	        dispatch({
+	          type: _constants.Constants.MOCK_CREATE_ERROR,
+	          error: response.statusMessage
+	        });
+	      }
+	    }).catch(function (error) {
+	      dispatch({
+	        type: _constants.Constants.MOCK_CREATE_ERROR,
+	        error: error
+	      });
+	    });
+	  };
+	};
+
+	function editMock(data) {
+	  // TODO
+		};
 
 /***/ },
 /* 261 */
@@ -29520,14 +29576,14 @@
 	      var _refs = this.refs;
 	      var name = _refs.name;
 	      var method = _refs.method;
-	      var endpoint = _refs.endpoint;
+	      var url = _refs.url;
 	      var response = _refs.response;
 
 
-	      this.props.dispatch(editMock({
+	      this.props.dispatch((0, _mocks.editMock)({
 	        name: name.value,
 	        method: method.value,
-	        endpoint: endpoint.value,
+	        url: url.value,
 	        response: response.value
 	      }));
 	    }
@@ -29540,6 +29596,19 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'columns' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'column col-md-12' },
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/', className: 'btn' },
+	              'Back to Home'
+	            )
+	          )
+	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'columns' },
@@ -29564,7 +29633,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'column col-md-8' },
-	                  _react2.default.createElement('input', { ref: 'name', value: mock.name, className: 'form-input', type: 'text', id: 'name', placeholder: 'Name' })
+	                  _react2.default.createElement('input', { ref: 'name', defaultValue: mock.name, className: 'form-input', type: 'text', id: 'name', placeholder: 'Name' })
 	                )
 	              ),
 	              _react2.default.createElement(
@@ -29584,7 +29653,7 @@
 	                  { className: 'column col-md-8' },
 	                  _react2.default.createElement(
 	                    'select',
-	                    { ref: 'method', className: 'form-select', value: mock.method },
+	                    { ref: 'method', className: 'form-select', defaultValue: mock.method },
 	                    _react2.default.createElement(
 	                      'option',
 	                      { value: 'GET' },
@@ -29628,7 +29697,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'column col-md-8' },
-	                  _react2.default.createElement('input', { value: mock.endpoint, className: 'form-input', type: 'text', id: 'endpoint', placeholder: 'Endpoint' })
+	                  _react2.default.createElement('input', { ref: 'url', defaultValue: mock.url, className: 'form-input', type: 'text', id: 'endpoint', placeholder: 'Endpoint' })
 	                )
 	              ),
 	              _react2.default.createElement(
@@ -29646,7 +29715,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'column col-md-8' },
-	                  _react2.default.createElement('textarea', { value: mock.response, className: 'form-input', id: 'response', placeholder: 'JSON response', rows: '5' })
+	                  _react2.default.createElement('textarea', { ref: 'response', defaultValue: mock.response, className: 'form-input', id: 'response', placeholder: 'JSON response', rows: '5' })
 	                )
 	              ),
 	              _react2.default.createElement(
@@ -29682,6 +29751,229 @@
 	};
 
 		exports.default = (0, _reactRedux.connect)(mapStateToProps)(MockShowView);
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(168);
+
+	var _mocks = __webpack_require__(260);
+
+	var _reactRouter = __webpack_require__(190);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MockNewView = function (_Component) {
+	  _inherits(MockNewView, _Component);
+
+	  function MockNewView() {
+	    _classCallCheck(this, MockNewView);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(MockNewView).apply(this, arguments));
+	  }
+
+	  _createClass(MockNewView, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      e.preventDefault();
+
+	      var _refs = this.refs;
+	      var name = _refs.name;
+	      var method = _refs.method;
+	      var url = _refs.url;
+	      var response = _refs.response;
+
+
+	      this.props.dispatch((0, _mocks.createMock)({
+	        name: name.value,
+	        method: method.value,
+	        url: url.value,
+	        response: response.value
+	      }));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var mock = this.props.mock;
+
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'columns' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'column col-md-12' },
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/', className: 'btn' },
+	              'Back to Home'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'columns' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'column col-md-12' },
+	            _react2.default.createElement(
+	              'form',
+	              { onSubmit: this.handleSubmit.bind(this) },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-4' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    { className: 'form-label', 'for': 'name' },
+	                    'Name'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-8' },
+	                  _react2.default.createElement('input', { ref: 'name', className: 'form-input', type: 'text', id: 'name', placeholder: 'Name' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-4' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    { className: 'form-label' },
+	                    'Options'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-8' },
+	                  _react2.default.createElement(
+	                    'select',
+	                    { ref: 'method', className: 'form-select' },
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'GET' },
+	                      'GET'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'POST' },
+	                      'POST'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'PUT' },
+	                      'PUT'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'DELETE' },
+	                      'DELETE'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'PATCH' },
+	                      'PATCH'
+	                    )
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-4' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    { className: 'form-label', 'for': 'endpoint' },
+	                    'Endpoint'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-8' },
+	                  _react2.default.createElement('input', { ref: 'url', className: 'form-input', type: 'text', id: 'endpoint', placeholder: 'Endpoint' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-4' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    { className: 'form-label' },
+	                    'Response'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-8' },
+	                  _react2.default.createElement('textarea', { ref: 'response', className: 'form-input', id: 'response', placeholder: 'JSON response', rows: '5' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'button',
+	                  { className: 'btn btn-primary', type: 'submit' },
+	                  'Submit'
+	                ),
+	                _react2.default.createElement(
+	                  _reactRouter.Link,
+	                  { className: 'btn btn-link', to: '/' },
+	                  'Cancel'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return MockNewView;
+	}(_react.Component);
+
+	;
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    newMock: state.mocks.newMock
+	  };
+	};
+
+		exports.default = (0, _reactRedux.connect)(mapStateToProps)(MockNewView);
 
 /***/ }
 /******/ ]);

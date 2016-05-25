@@ -71,5 +71,43 @@ export function fetchMock(id) {
       });
     });
   }
-}
+};
+
+export function createMock(data) {
+  return dispatch => {
+
+    console.log('createMock ===>');
+
+    axios.post(API.mocks, data)
+    .then(result => {
+
+      const response = result.data;
+
+      console.log('inside result));');
+      console.log(JSON.stringify(response));
+
+      if (response.statusCode === 1000) {
+        dispatch({
+          type: Constants.MOCK_CREATED
+        });
+        dispatch(push('/'));
+      } else {
+        dispatch({
+          type: Constants.MOCK_CREATE_ERROR,
+          error: response.statusMessage
+        });
+      }
+    })
+    .catch(error => {
+      dispatch({
+        type: Constants.MOCK_CREATE_ERROR,
+        error: error
+      });
+    });
+  }
+};
+
+export function editMock(data) {
+  // TODO
+};
 

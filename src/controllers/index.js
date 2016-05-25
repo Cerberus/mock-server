@@ -1,6 +1,7 @@
 'use strict';
 
 const Model = require('../models/endpoint.model.js');
+const chalk = require('chalk');
 
 let getMocks = (req, res) => {
   Model
@@ -54,8 +55,13 @@ let createMock = (req, res) => {
     });
   } else {
 
-    let model = new Model({
+    console.log(chalk.blue(JSON.stringify(payload)));
 
+    let model = new Model({
+      name: payload.name,
+      url: payload.url,
+      method: payload.method,
+      response: payload.response
     });
 
     model.save(err => {

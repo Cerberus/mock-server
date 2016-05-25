@@ -10,6 +10,7 @@ import reducers from './reducers';
 
 import MockIndexView from './containers/mocks/index';
 import MockShowView from './containers/mocks/show';
+import MockNewView from './containers/mocks/new';
 
 
 const loggerMiddleware = createLogger({
@@ -26,6 +27,7 @@ const node = (
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={MockIndexView} />
+      <Route path="/new" component={MockNewView} />
       <Route path="/:id" component={MockShowView} />
     </Router>
   </Provider>

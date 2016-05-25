@@ -18,6 +18,11 @@ class MockIndexView extends Component {
       <div className="container">
         <div className="columns">
           <div className="column col-md-12">
+            <Link to="/new" className="btn">Create new Endpoint</Link>
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column col-md-12">
             <table className="table table-striped table-hover">
               <thead>
                 <tr>
