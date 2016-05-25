@@ -1,6 +1,9 @@
 'use strict';
 
 const express = require('express');
+const morgan = require('morgan');
+const path = require('path');
+const bodyParser = require('body-parser');
 const app = express();
 
 const db = require('./db')() // invoke db.
@@ -8,16 +11,28 @@ const db = require('./db')() // invoke db.
 const { APP_PORT } = require('./config');
 const Model = require('./models/endpoint.model.js');
 
+app.use(express.static(__dirname + '/../public'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use(function(req, res, next) {
+
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization');
+
+  next();
+
+});
+app.use(morgan('dev'));
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-
-// TODO: match with regex
-//app.get('/service/mobile/:mobileNo')
-// match /service/mobile/12345
-// match /service/mobile/55555
-// match /service/mobile/:mobileNo
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../public/index.html'));
+});
 
 app.get('*', (req, res) => {
 
