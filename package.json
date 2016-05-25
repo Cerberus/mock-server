@@ -1,0 +1,15 @@
+{
+  "name": "nextzy-json-kiss",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "chalk": "^1.1.3",
+    "express": "^4.13.4",
+    "mongoose": "^4.4.19",
+    "pug": "^2.0.0-alpha8"
+  }
+}
