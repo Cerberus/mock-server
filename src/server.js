@@ -26,12 +26,24 @@ app.use(function(req, res, next) {
 });
 app.use(morgan('dev'));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+app.get('/mocks', (req, res) => {
 
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../public/index.html'));
+  Model
+  .find({})
+  .exec((err, result) => {
+    if (err) {
+      return res.json({
+        statusCode: 1001,
+        statusMessage: err
+      });
+    }
+
+    return res.json({
+      statusCode: 1000,
+      statusMessage: 'OK',
+      data: result
+    });
+  });
 });
 
 app.get('*', (req, res) => {
