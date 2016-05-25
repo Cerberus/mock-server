@@ -1,3 +1,6 @@
 import mocks from './mocks';
+import { combineReducers } from 'redux';
 
-export default mocks
+export default combineReducers({
+  mocks
+});

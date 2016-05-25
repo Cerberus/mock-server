@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchMocks } from '../../../actions/mocks';
+import { fetchMocks } from '../../actions/mocks';
 import { Link } from 'react-router';
 
 class MockIndexView extends Component {
