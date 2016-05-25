@@ -13,7 +13,7 @@ let EndpointSchema = new Schema({
   method: {
     type: String,
     requried: true
-  }
+  },
   url: {
     type: String,
     required: true,
