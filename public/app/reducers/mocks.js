@@ -24,6 +24,13 @@ export default function reducer(state = initState, action = {}) {
         mocks: action.payload
       }
 
+    case Constants.MOCK_RECEIVED:
+      return {
+        ...state,
+        fetching: false,
+        mock: action.payload
+      }
+
     default:
       return state;
   }

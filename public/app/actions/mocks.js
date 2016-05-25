@@ -37,3 +37,39 @@ export function fetchMocks() {
   };
 };
 
+export function fetchMock(id) {
+  return dispatch => {
+
+    dispatch({
+      type: Constants.MOCK_FETCHING
+    });
+
+    let url = API.mock.replace(':id', id);
+    console.log('fetchMock : ' + url);
+    axios.get(url)
+    .then(result => {
+      
+      const response = result.data;
+
+      if (response.statusCode === 1000) {
+        dispatch({
+          type: Constants.MOCK_RECEIVED,
+          payload: response.data
+        });
+      } else {
+        dispatch({
+          type: Constants.MOCK_FETCHING_ERROR,
+          error: response.statusMessage
+        });
+      }
+
+    })
+    .catch(error => {
+      dispatch({
+        type: Constants.MOCK_FETCHING_ERROR,
+        error: error
+      });
+    });
+  }
+}
+

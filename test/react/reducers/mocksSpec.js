@@ -54,9 +54,32 @@ describe('Mocks Reducers', () => {
   });
 
   describe('Mock', () => {
-    xit('should handle MOCK_FETCHING', () => {});
+    it('should handle MOCK_FETCHING', () => {
+      expect(mocks(initialState, {
+        type: 'MOCK_FETCHING'
+      }))
+      .to.eql({
+        error: null,
+        fetching: true,
+        mocks: [],
+        mock: {},
+        newMock: {}
+      });
+    });
+    it('should handle MOCK_RECEIVED', () => {
+      expect(mocks(initialState, {
+        type: 'MOCK_RECEIVED',
+        payload: { id: '001', name: 'name', url: 'url', response: 'response'}
+      }))
+      .to.eql({
+        error: null,
+        fetching: false,
+        mocks: [],
+        mock: { id: '001', name: 'name', url: 'url', response: 'response'},
+        newMock: {}
+      });
+    });
     xit('should handle MOCK_FETCHING_ERROR', () => {});
-    xit('should handle MOCK_RECEIVED', () => {});
     xit('should handle MOCK_CREATED', () => {});
     xit('should handle MOCK_EDITED', () => {});
     xit('should handle MOCK_DELETE', () => {});

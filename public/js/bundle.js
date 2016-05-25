@@ -58,21 +58,38 @@
 
 	var _redux = __webpack_require__(175);
 
-	var _reducers = __webpack_require__(249);
+	var _reactRouterRedux = __webpack_require__(249);
+
+	var _reduxThunk = __webpack_require__(254);
+
+	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+	var _reduxLogger = __webpack_require__(255);
+
+	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
+
+	var _reducers = __webpack_require__(256);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
-	var _index = __webpack_require__(252);
+	var _index = __webpack_require__(259);
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _show = __webpack_require__(277);
+	var _show = __webpack_require__(279);
 
 	var _show2 = _interopRequireDefault(_show);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var store = (0, _redux.createStore)(_reducers2.default);
+	var loggerMiddleware = (0, _reduxLogger2.default)({
+	  level: 'info',
+	  collapsed: true
+	});
+
+	var reduxRouterMiddleware = (0, _reactRouterRedux.routerMiddleware)(_reactRouter.browserHistory);
+	var createStoreWithMiddleware = (0, _redux.applyMiddleware)(reduxRouterMiddleware, _reduxThunk2.default, loggerMiddleware)(_redux.createStore);
+	var store = createStoreWithMiddleware(_reducers2.default);
 
 	var target = document.getElementById('app');
 	var node = _react2.default.createElement(
@@ -27315,232 +27332,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	var _mocks = __webpack_require__(250);
-
-	var _mocks2 = _interopRequireDefault(_mocks);
-
-	var _redux = __webpack_require__(175);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = (0, _redux.combineReducers)({
-	  mocks: _mocks2.default
-		});
-
-/***/ },
-/* 250 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	exports.default = reducer;
-
-	var _constants = __webpack_require__(251);
-
-	var initState = {
-	  fetching: true,
-	  mocks: [],
-	  mock: {},
-	  newMock: {},
-	  error: null
-	};
-
-	function reducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? initState : arguments[0];
-	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	  switch (action.type) {
-
-	    case _constants.Constants.MOCKS_FETCHING:
-	      return _extends({}, state, {
-	        fetching: true
-	      });
-
-	    case _constants.Constants.MOCKS_RECEIVED:
-	      return _extends({}, state, {
-	        fetching: false,
-	        mocks: action.payload
-	      });
-
-	    default:
-	      return state;
-	  }
-		}
-
-/***/ },
-/* 251 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var BASE_URL = 'http://localhost:5000';
-
-	var API = exports.API = {
-	  mocks: BASE_URL + '/mocks',
-	  mock: BASE_URL + '/mocks/:id'
-	};
-
-	var Constants = exports.Constants = {
-
-	  MOCKS_FETCHING: 'MOCKS_FETCHING',
-	  MOCKS_FETCHING_ERROR: 'MOCKS_FETCHING_ERROR',
-	  MOCKS_RECEIVED: 'MOCKS_RECEIVED',
-	  MOCK_FETCHING: 'MOCK_FETCHING',
-	  MOCK_FETCHING_ERROR: 'MOCK_FETCHING_ERROR',
-	  MOCK_RECEIVED: 'MOCK_RECEIVED',
-	  MOCK_CREATED: 'MOCK_CREATED',
-	  MOCK_CREAT_ERROR: 'MOCK_CREATED_ERROR',
-	  MOCK_EDITED: 'MOCK_EDITED',
-	  MOCK_EDIT_ERROR: 'MOCK_EDIT_ERROR',
-	  MOCK_DELETED: 'MOCK_DELETED',
-	  MOCK_DELETE_ERROR: 'MOCK_DELETE_ERROR'
-		};
-
-/***/ },
-/* 252 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(168);
-
-	var _mocks = __webpack_require__(253);
-
-	var _reactRouter = __webpack_require__(190);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var MockIndexView = function (_Component) {
-	  _inherits(MockIndexView, _Component);
-
-	  function MockIndexView() {
-	    _classCallCheck(this, MockIndexView);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(MockIndexView).apply(this, arguments));
-	  }
-
-	  _createClass(MockIndexView, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var dispatch = this.props.dispatch;
-
-	      dispatch((0, _mocks.fetchMocks)());
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var mocks = this.props.mocks;
-
-
-	      return _react2.default.createElement(
-	        'h1',
-	        null,
-	        'MockIndexView'
-	      );
-	    }
-	  }]);
-
-	  return MockIndexView;
-	}(_react.Component);
-
-	;
-
-	var mapStateToProps = function mapStateToProps(state) {
-	  return state.mocks || {};
-	};
-
-		exports.default = (0, _reactRedux.connect)(mapStateToProps)(MockIndexView);
-
-/***/ },
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.fetchMocks = fetchMocks;
-
-	var _constants = __webpack_require__(251);
-
-	var _reactRouterRedux = __webpack_require__(254);
-
-	var _axios = __webpack_require__(259);
-
-	var _axios2 = _interopRequireDefault(_axios);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function fetchMocks() {
-	  return function (dispatch) {
-
-	    dispatch({
-	      type: _constants.Constants.MOCKS_FETCHING
-	    });
-
-	    _axios2.default.get(_constants.API.mocks).then(function (result) {
-
-	      var response = result.data;
-
-	      if (response.statusCode === 1000) {
-	        dispatch({
-	          type: _constants.Constants.MOCKS_RECEIVED,
-	          payload: response.data
-	        });
-	      } else {
-	        dispatch({
-	          type: _constants.Constants.MOCKS_FETCHING_ERROR,
-	          error: response.statusMessage
-	        });
-	      }
-	    }).catch(function (error) {
-	      dispatch({
-	        type: _constants.Constants.MOCKS_FETCHING_ERROR,
-	        error: error
-	      });
-	    });
-	  };
-	};
-
-/***/ },
-/* 254 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 	exports.routerMiddleware = exports.routerActions = exports.goForward = exports.goBack = exports.go = exports.replace = exports.push = exports.CALL_HISTORY_METHOD = exports.routerReducer = exports.LOCATION_CHANGE = exports.syncHistoryWithStore = undefined;
 
-	var _reducer = __webpack_require__(255);
+	var _reducer = __webpack_require__(250);
 
 	Object.defineProperty(exports, 'LOCATION_CHANGE', {
 	  enumerable: true,
@@ -27555,7 +27349,7 @@
 	  }
 	});
 
-	var _actions = __webpack_require__(256);
+	var _actions = __webpack_require__(251);
 
 	Object.defineProperty(exports, 'CALL_HISTORY_METHOD', {
 	  enumerable: true,
@@ -27600,11 +27394,11 @@
 	  }
 	});
 
-	var _sync = __webpack_require__(257);
+	var _sync = __webpack_require__(252);
 
 	var _sync2 = _interopRequireDefault(_sync);
 
-	var _middleware = __webpack_require__(258);
+	var _middleware = __webpack_require__(253);
 
 	var _middleware2 = _interopRequireDefault(_middleware);
 
@@ -27614,7 +27408,7 @@
 	exports.routerMiddleware = _middleware2['default'];
 
 /***/ },
-/* 255 */
+/* 250 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27658,7 +27452,7 @@
 	}
 
 /***/ },
-/* 256 */
+/* 251 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27700,7 +27494,7 @@
 	var routerActions = exports.routerActions = { push: push, replace: replace, go: go, goBack: goBack, goForward: goForward };
 
 /***/ },
-/* 257 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27713,7 +27507,7 @@
 
 	exports['default'] = syncHistoryWithStore;
 
-	var _reducer = __webpack_require__(255);
+	var _reducer = __webpack_require__(250);
 
 	var defaultSelectLocationState = function defaultSelectLocationState(state) {
 	  return state.routing;
@@ -27852,7 +27646,7 @@
 	}
 
 /***/ },
-/* 258 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27862,7 +27656,7 @@
 	});
 	exports['default'] = routerMiddleware;
 
-	var _actions = __webpack_require__(256);
+	var _actions = __webpack_require__(251);
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -27890,10 +27684,526 @@
 	}
 
 /***/ },
+/* 254 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch;
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
+
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
+
+/***/ },
+/* 255 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
+	var repeat = function repeat(str, times) {
+	  return new Array(times + 1).join(str);
+	};
+	var pad = function pad(num, maxLength) {
+	  return repeat("0", maxLength - num.toString().length) + num;
+	};
+	var formatTime = function formatTime(time) {
+	  return "@ " + pad(time.getHours(), 2) + ":" + pad(time.getMinutes(), 2) + ":" + pad(time.getSeconds(), 2) + "." + pad(time.getMilliseconds(), 3);
+	};
+
+	// Use the new performance api to get better precision if available
+	var timer = typeof performance !== "undefined" && typeof performance.now === "function" ? performance : Date;
+
+	/**
+	 * parse the level option of createLogger
+	 *
+	 * @property {string | function | object} level - console[level]
+	 * @property {object} action
+	 * @property {array} payload
+	 * @property {string} type
+	 */
+
+	function getLogLevel(level, action, payload, type) {
+	  switch (typeof level === "undefined" ? "undefined" : _typeof(level)) {
+	    case "object":
+	      return typeof level[type] === "function" ? level[type].apply(level, _toConsumableArray(payload)) : level[type];
+	    case "function":
+	      return level(action);
+	    default:
+	      return level;
+	  }
+	}
+
+	/**
+	 * Creates logger with followed options
+	 *
+	 * @namespace
+	 * @property {object} options - options for logger
+	 * @property {string | function | object} options.level - console[level]
+	 * @property {boolean} options.duration - print duration of each action?
+	 * @property {boolean} options.timestamp - print timestamp with each action?
+	 * @property {object} options.colors - custom colors
+	 * @property {object} options.logger - implementation of the `console` API
+	 * @property {boolean} options.logErrors - should errors in action execution be caught, logged, and re-thrown?
+	 * @property {boolean} options.collapsed - is group collapsed?
+	 * @property {boolean} options.predicate - condition which resolves logger behavior
+	 * @property {function} options.stateTransformer - transform state before print
+	 * @property {function} options.actionTransformer - transform action before print
+	 * @property {function} options.errorTransformer - transform error before print
+	 */
+
+	function createLogger() {
+	  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var _options$level = options.level;
+	  var level = _options$level === undefined ? "log" : _options$level;
+	  var _options$logger = options.logger;
+	  var logger = _options$logger === undefined ? console : _options$logger;
+	  var _options$logErrors = options.logErrors;
+	  var logErrors = _options$logErrors === undefined ? true : _options$logErrors;
+	  var collapsed = options.collapsed;
+	  var predicate = options.predicate;
+	  var _options$duration = options.duration;
+	  var duration = _options$duration === undefined ? false : _options$duration;
+	  var _options$timestamp = options.timestamp;
+	  var timestamp = _options$timestamp === undefined ? true : _options$timestamp;
+	  var transformer = options.transformer;
+	  var _options$stateTransfo = options.stateTransformer;
+	  var // deprecated
+	  stateTransformer = _options$stateTransfo === undefined ? function (state) {
+	    return state;
+	  } : _options$stateTransfo;
+	  var _options$actionTransf = options.actionTransformer;
+	  var actionTransformer = _options$actionTransf === undefined ? function (actn) {
+	    return actn;
+	  } : _options$actionTransf;
+	  var _options$errorTransfo = options.errorTransformer;
+	  var errorTransformer = _options$errorTransfo === undefined ? function (error) {
+	    return error;
+	  } : _options$errorTransfo;
+	  var _options$colors = options.colors;
+	  var colors = _options$colors === undefined ? {
+	    title: function title() {
+	      return "#000000";
+	    },
+	    prevState: function prevState() {
+	      return "#9E9E9E";
+	    },
+	    action: function action() {
+	      return "#03A9F4";
+	    },
+	    nextState: function nextState() {
+	      return "#4CAF50";
+	    },
+	    error: function error() {
+	      return "#F20404";
+	    }
+	  } : _options$colors;
+
+	  // exit if console undefined
+
+	  if (typeof logger === "undefined") {
+	    return function () {
+	      return function (next) {
+	        return function (action) {
+	          return next(action);
+	        };
+	      };
+	    };
+	  }
+
+	  if (transformer) {
+	    console.error("Option 'transformer' is deprecated, use stateTransformer instead");
+	  }
+
+	  var logBuffer = [];
+	  function printBuffer() {
+	    logBuffer.forEach(function (logEntry, key) {
+	      var started = logEntry.started;
+	      var startedTime = logEntry.startedTime;
+	      var action = logEntry.action;
+	      var prevState = logEntry.prevState;
+	      var error = logEntry.error;
+	      var took = logEntry.took;
+	      var nextState = logEntry.nextState;
+
+	      var nextEntry = logBuffer[key + 1];
+	      if (nextEntry) {
+	        nextState = nextEntry.prevState;
+	        took = nextEntry.started - started;
+	      }
+	      // message
+	      var formattedAction = actionTransformer(action);
+	      var isCollapsed = typeof collapsed === "function" ? collapsed(function () {
+	        return nextState;
+	      }, action) : collapsed;
+
+	      var formattedTime = formatTime(startedTime);
+	      var titleCSS = colors.title ? "color: " + colors.title(formattedAction) + ";" : null;
+	      var title = "action " + (timestamp ? formattedTime : "") + " " + formattedAction.type + " " + (duration ? "(in " + took.toFixed(2) + " ms)" : "");
+
+	      // render
+	      try {
+	        if (isCollapsed) {
+	          if (colors.title) logger.groupCollapsed("%c " + title, titleCSS);else logger.groupCollapsed(title);
+	        } else {
+	          if (colors.title) logger.group("%c " + title, titleCSS);else logger.group(title);
+	        }
+	      } catch (e) {
+	        logger.log(title);
+	      }
+
+	      var prevStateLevel = getLogLevel(level, formattedAction, [prevState], "prevState");
+	      var actionLevel = getLogLevel(level, formattedAction, [formattedAction], "action");
+	      var errorLevel = getLogLevel(level, formattedAction, [error, prevState], "error");
+	      var nextStateLevel = getLogLevel(level, formattedAction, [nextState], "nextState");
+
+	      if (prevStateLevel) {
+	        if (colors.prevState) logger[prevStateLevel]("%c prev state", "color: " + colors.prevState(prevState) + "; font-weight: bold", prevState);else logger[prevStateLevel]("prev state", prevState);
+	      }
+
+	      if (actionLevel) {
+	        if (colors.action) logger[actionLevel]("%c action", "color: " + colors.action(formattedAction) + "; font-weight: bold", formattedAction);else logger[actionLevel]("action", formattedAction);
+	      }
+
+	      if (error && errorLevel) {
+	        if (colors.error) logger[errorLevel]("%c error", "color: " + colors.error(error, prevState) + "; font-weight: bold", error);else logger[errorLevel]("error", error);
+	      }
+
+	      if (nextStateLevel) {
+	        if (colors.nextState) logger[nextStateLevel]("%c next state", "color: " + colors.nextState(nextState) + "; font-weight: bold", nextState);else logger[nextStateLevel]("next state", nextState);
+	      }
+
+	      try {
+	        logger.groupEnd();
+	      } catch (e) {
+	        logger.log("—— log end ——");
+	      }
+	    });
+	    logBuffer.length = 0;
+	  }
+
+	  return function (_ref) {
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        // exit early if predicate function returns false
+	        if (typeof predicate === "function" && !predicate(getState, action)) {
+	          return next(action);
+	        }
+
+	        var logEntry = {};
+	        logBuffer.push(logEntry);
+
+	        logEntry.started = timer.now();
+	        logEntry.startedTime = new Date();
+	        logEntry.prevState = stateTransformer(getState());
+	        logEntry.action = action;
+
+	        var returnedValue = undefined;
+	        if (logErrors) {
+	          try {
+	            returnedValue = next(action);
+	          } catch (e) {
+	            logEntry.error = errorTransformer(e);
+	          }
+	        } else {
+	          returnedValue = next(action);
+	        }
+
+	        logEntry.took = timer.now() - logEntry.started;
+	        logEntry.nextState = stateTransformer(getState());
+
+	        printBuffer();
+
+	        if (logEntry.error) throw logEntry.error;
+	        return returnedValue;
+	      };
+	    };
+	  };
+	}
+
+	module.exports = createLogger;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _mocks = __webpack_require__(257);
+
+	var _mocks2 = _interopRequireDefault(_mocks);
+
+	var _redux = __webpack_require__(175);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = (0, _redux.combineReducers)({
+	  mocks: _mocks2.default
+		});
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports.default = reducer;
+
+	var _constants = __webpack_require__(258);
+
+	var initState = {
+	  fetching: true,
+	  mocks: [],
+	  mock: {},
+	  newMock: {},
+	  error: null
+	};
+
+	function reducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initState : arguments[0];
+	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	  switch (action.type) {
+
+	    case _constants.Constants.MOCKS_FETCHING:
+	      return _extends({}, state, {
+	        fetching: true
+	      });
+
+	    case _constants.Constants.MOCKS_RECEIVED:
+	      return _extends({}, state, {
+	        fetching: false,
+	        mocks: action.payload
+	      });
+
+	    case _constants.Constants.MOCK_RECEIVED:
+	      return _extends({}, state, {
+	        fetching: false,
+	        mock: action.payload
+	      });
+
+	    default:
+	      return state;
+	  }
+		}
+
+/***/ },
+/* 258 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var BASE_URL = 'http://localhost:5000';
+
+	var API = exports.API = {
+	  mocks: BASE_URL + '/mocks',
+	  mock: BASE_URL + '/mocks/:id'
+	};
+
+	var Constants = exports.Constants = {
+
+	  MOCKS_FETCHING: 'MOCKS_FETCHING',
+	  MOCKS_FETCHING_ERROR: 'MOCKS_FETCHING_ERROR',
+	  MOCKS_RECEIVED: 'MOCKS_RECEIVED',
+	  MOCK_FETCHING: 'MOCK_FETCHING',
+	  MOCK_FETCHING_ERROR: 'MOCK_FETCHING_ERROR',
+	  MOCK_RECEIVED: 'MOCK_RECEIVED',
+	  MOCK_CREATED: 'MOCK_CREATED',
+	  MOCK_CREAT_ERROR: 'MOCK_CREATED_ERROR',
+	  MOCK_EDITED: 'MOCK_EDITED',
+	  MOCK_EDIT_ERROR: 'MOCK_EDIT_ERROR',
+	  MOCK_DELETED: 'MOCK_DELETED',
+	  MOCK_DELETE_ERROR: 'MOCK_DELETE_ERROR'
+		};
+
+/***/ },
 /* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(260);
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(168);
+
+	var _mocks = __webpack_require__(260);
+
+	var _reactRouter = __webpack_require__(190);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MockIndexView = function (_Component) {
+	  _inherits(MockIndexView, _Component);
+
+	  function MockIndexView() {
+	    _classCallCheck(this, MockIndexView);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(MockIndexView).apply(this, arguments));
+	  }
+
+	  _createClass(MockIndexView, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var dispatch = this.props.dispatch;
+
+	      dispatch((0, _mocks.fetchMocks)());
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var mocks = this.props.mocks;
+
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'columns' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'column col-md-12' },
+	            _react2.default.createElement(
+	              'table',
+	              { className: 'table table-striped table-hover' },
+	              _react2.default.createElement(
+	                'thead',
+	                null,
+	                _react2.default.createElement(
+	                  'tr',
+	                  null,
+	                  _react2.default.createElement(
+	                    'th',
+	                    { className: 'column col-md-2' },
+	                    'Name'
+	                  ),
+	                  _react2.default.createElement(
+	                    'th',
+	                    { className: 'column col-md-1' },
+	                    'Method'
+	                  ),
+	                  _react2.default.createElement(
+	                    'th',
+	                    { className: 'column col-md-4' },
+	                    'Endpoint'
+	                  ),
+	                  _react2.default.createElement(
+	                    'th',
+	                    { className: 'column col-md-4' },
+	                    'Response'
+	                  ),
+	                  _react2.default.createElement(
+	                    'th',
+	                    { className: 'column col-md-1' },
+	                    'Action'
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'tbody',
+	                null,
+	                mocks.map(function (mock) {
+
+	                  return _react2.default.createElement(
+	                    'tr',
+	                    { className: 'selected' },
+	                    _react2.default.createElement(
+	                      'td',
+	                      null,
+	                      mock.name
+	                    ),
+	                    _react2.default.createElement(
+	                      'td',
+	                      null,
+	                      mock.method
+	                    ),
+	                    _react2.default.createElement(
+	                      'td',
+	                      null,
+	                      mock.url
+	                    ),
+	                    _react2.default.createElement(
+	                      'td',
+	                      null,
+	                      mock.response
+	                    ),
+	                    _react2.default.createElement(
+	                      'td',
+	                      null,
+	                      _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: mock._id, className: 'btn' },
+	                        'Edit'
+	                      )
+	                    )
+	                  );
+	                })
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return MockIndexView;
+	}(_react.Component);
+
+	;
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return state.mocks || {};
+	};
+
+		exports.default = (0, _reactRedux.connect)(mapStateToProps)(MockIndexView);
 
 /***/ },
 /* 260 */
@@ -27901,14 +28211,106 @@
 
 	'use strict';
 
-	var defaults = __webpack_require__(261);
-	var utils = __webpack_require__(262);
-	var dispatchRequest = __webpack_require__(263);
-	var InterceptorManager = __webpack_require__(272);
-	var isAbsoluteURL = __webpack_require__(273);
-	var combineURLs = __webpack_require__(274);
-	var bind = __webpack_require__(275);
-	var transformData = __webpack_require__(267);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.fetchMocks = fetchMocks;
+	exports.fetchMock = fetchMock;
+
+	var _constants = __webpack_require__(258);
+
+	var _reactRouterRedux = __webpack_require__(249);
+
+	var _axios = __webpack_require__(261);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function fetchMocks() {
+	  return function (dispatch) {
+
+	    dispatch({
+	      type: _constants.Constants.MOCKS_FETCHING
+	    });
+
+	    _axios2.default.get(_constants.API.mocks).then(function (result) {
+
+	      var response = result.data;
+
+	      if (response.statusCode === 1000) {
+	        dispatch({
+	          type: _constants.Constants.MOCKS_RECEIVED,
+	          payload: response.data
+	        });
+	      } else {
+	        dispatch({
+	          type: _constants.Constants.MOCKS_FETCHING_ERROR,
+	          error: response.statusMessage
+	        });
+	      }
+	    }).catch(function (error) {
+	      dispatch({
+	        type: _constants.Constants.MOCKS_FETCHING_ERROR,
+	        error: error
+	      });
+	    });
+	  };
+	};
+
+	function fetchMock(id) {
+	  return function (dispatch) {
+
+	    dispatch({
+	      type: _constants.Constants.MOCK_FETCHING
+	    });
+
+	    var url = _constants.API.mock.replace(':id', id);
+	    console.log('fetchMock : ' + url);
+	    _axios2.default.get(url).then(function (result) {
+
+	      var response = result.data;
+
+	      if (response.statusCode === 1000) {
+	        dispatch({
+	          type: _constants.Constants.MOCK_RECEIVED,
+	          payload: response.data
+	        });
+	      } else {
+	        dispatch({
+	          type: _constants.Constants.MOCK_FETCHING_ERROR,
+	          error: response.statusMessage
+	        });
+	      }
+	    }).catch(function (error) {
+	      dispatch({
+	        type: _constants.Constants.MOCK_FETCHING_ERROR,
+	        error: error
+	      });
+	    });
+	  };
+	}
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(262);
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var defaults = __webpack_require__(263);
+	var utils = __webpack_require__(264);
+	var dispatchRequest = __webpack_require__(265);
+	var InterceptorManager = __webpack_require__(274);
+	var isAbsoluteURL = __webpack_require__(275);
+	var combineURLs = __webpack_require__(276);
+	var bind = __webpack_require__(277);
+	var transformData = __webpack_require__(269);
 
 	function Axios(defaultConfig) {
 	  this.defaults = utils.merge({}, defaultConfig);
@@ -27994,7 +28396,7 @@
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(276);
+	axios.spread = __webpack_require__(278);
 
 	// Provide aliases for supported request methods
 	utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
@@ -28022,12 +28424,12 @@
 
 
 /***/ },
-/* 261 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(262);
+	var utils = __webpack_require__(264);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -28094,7 +28496,7 @@
 
 
 /***/ },
-/* 262 */
+/* 264 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28366,7 +28768,7 @@
 
 
 /***/ },
-/* 263 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28388,10 +28790,10 @@
 	        adapter = config.adapter;
 	      } else if (typeof XMLHttpRequest !== 'undefined') {
 	        // For browsers use XHR adapter
-	        adapter = __webpack_require__(264);
+	        adapter = __webpack_require__(266);
 	      } else if (typeof process !== 'undefined') {
 	        // For node use HTTP adapter
-	        adapter = __webpack_require__(264);
+	        adapter = __webpack_require__(266);
 	      }
 
 	      if (typeof adapter === 'function') {
@@ -28407,18 +28809,18 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 264 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(262);
-	var buildURL = __webpack_require__(265);
-	var parseHeaders = __webpack_require__(266);
-	var transformData = __webpack_require__(267);
-	var isURLSameOrigin = __webpack_require__(268);
-	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(269);
-	var settle = __webpack_require__(270);
+	var utils = __webpack_require__(264);
+	var buildURL = __webpack_require__(267);
+	var parseHeaders = __webpack_require__(268);
+	var transformData = __webpack_require__(269);
+	var isURLSameOrigin = __webpack_require__(270);
+	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(271);
+	var settle = __webpack_require__(272);
 
 	module.exports = function xhrAdapter(resolve, reject, config) {
 	  var requestData = config.data;
@@ -28515,7 +28917,7 @@
 	  // This is only done if running in a standard browser environment.
 	  // Specifically not if we're in a web worker, or react-native.
 	  if (utils.isStandardBrowserEnv()) {
-	    var cookies = __webpack_require__(271);
+	    var cookies = __webpack_require__(273);
 
 	    // Add xsrf header
 	    var xsrfValue = config.withCredentials || isURLSameOrigin(config.url) ?
@@ -28576,12 +28978,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 265 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(262);
+	var utils = __webpack_require__(264);
 
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -28649,12 +29051,12 @@
 
 
 /***/ },
-/* 266 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(262);
+	var utils = __webpack_require__(264);
 
 	/**
 	 * Parse headers into an object
@@ -28692,12 +29094,12 @@
 
 
 /***/ },
-/* 267 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(262);
+	var utils = __webpack_require__(264);
 
 	/**
 	 * Transform the data for a request or a response
@@ -28718,12 +29120,12 @@
 
 
 /***/ },
-/* 268 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(262);
+	var utils = __webpack_require__(264);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -28792,7 +29194,7 @@
 
 
 /***/ },
-/* 269 */
+/* 271 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28834,7 +29236,7 @@
 
 
 /***/ },
-/* 270 */
+/* 272 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28858,12 +29260,12 @@
 
 
 /***/ },
-/* 271 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(262);
+	var utils = __webpack_require__(264);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -28917,12 +29319,12 @@
 
 
 /***/ },
-/* 272 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(262);
+	var utils = __webpack_require__(264);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -28975,7 +29377,7 @@
 
 
 /***/ },
-/* 273 */
+/* 275 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28995,7 +29397,7 @@
 
 
 /***/ },
-/* 274 */
+/* 276 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29013,7 +29415,7 @@
 
 
 /***/ },
-/* 275 */
+/* 277 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29030,7 +29432,7 @@
 
 
 /***/ },
-/* 276 */
+/* 278 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29063,7 +29465,7 @@
 
 
 /***/ },
-/* 277 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29077,6 +29479,12 @@
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(168);
+
+	var _mocks = __webpack_require__(260);
+
+	var _reactRouter = __webpack_require__(190);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29096,12 +29504,168 @@
 	  }
 
 	  _createClass(MockShowView, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var dispatch = this.props.dispatch;
+	      var id = this.props.params.id;
+
+
+	      dispatch((0, _mocks.fetchMock)(id));
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      e.preventDefault();
+
+	      var _refs = this.refs;
+	      var name = _refs.name;
+	      var method = _refs.method;
+	      var endpoint = _refs.endpoint;
+	      var response = _refs.response;
+
+
+	      this.props.dispatch(editMock({
+	        name: name.value,
+	        method: method.value,
+	        endpoint: endpoint.value,
+	        response: response.value
+	      }));
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var mock = this.props.mock;
+
+
 	      return _react2.default.createElement(
-	        'h1',
-	        null,
-	        'MockShowView'
+	        'div',
+	        { className: 'container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'columns' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'column col-md-12' },
+	            _react2.default.createElement(
+	              'form',
+	              { onSubmit: this.handleSubmit.bind(this) },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-4' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    { className: 'form-label', 'for': 'name' },
+	                    'Name'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-8' },
+	                  _react2.default.createElement('input', { ref: 'name', value: mock.name, className: 'form-input', type: 'text', id: 'name', placeholder: 'Name' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-4' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    { className: 'form-label' },
+	                    'Options'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-8' },
+	                  _react2.default.createElement(
+	                    'select',
+	                    { ref: 'method', className: 'form-select', value: mock.method },
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'GET' },
+	                      'GET'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'POST' },
+	                      'POST'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'PUT' },
+	                      'PUT'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'DELETE' },
+	                      'DELETE'
+	                    ),
+	                    _react2.default.createElement(
+	                      'option',
+	                      { value: 'PATCH' },
+	                      'PATCH'
+	                    )
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-4' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    { className: 'form-label', 'for': 'endpoint' },
+	                    'Endpoint'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-8' },
+	                  _react2.default.createElement('input', { value: mock.endpoint, className: 'form-input', type: 'text', id: 'endpoint', placeholder: 'Endpoint' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-4' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    { className: 'form-label' },
+	                    'Response'
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'column col-md-8' },
+	                  _react2.default.createElement('textarea', { value: mock.response, className: 'form-input', id: 'response', placeholder: 'JSON response', rows: '5' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                  'button',
+	                  { className: 'btn btn-primary', type: 'submit' },
+	                  'Submit'
+	                ),
+	                _react2.default.createElement(
+	                  _reactRouter.Link,
+	                  { className: 'btn btn-link', to: '/' },
+	                  'Cancel'
+	                )
+	              )
+	            )
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -29111,7 +29675,13 @@
 
 	;
 
-	exports.default = MockShowView;
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    mock: state.mocks.mock
+	  };
+	};
+
+		exports.default = (0, _reactRedux.connect)(mapStateToProps)(MockShowView);
 
 /***/ }
 /******/ ]);
