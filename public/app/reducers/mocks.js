@@ -1,4 +1,4 @@
-import Constants from '../constants';
+import { Constants } from '../constants';
 
 const initState = {
   fetching: true,
@@ -13,12 +13,15 @@ export default function reducer(state = initState, action = {}) {
 
     case Constants.MOCKS_FETCHING:
       return {
-
+        ...state,
+        fetching: true
       }
 
     case Constants.MOCKS_RECEIVED:
       return {
-
+        ...state,
+        fetching: false,
+        mocks: action.payload
       }
 
     default:

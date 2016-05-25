@@ -18,8 +18,38 @@ describe('Mocks Reducers', () => {
   });
 
   describe('Mocks', () => {
-    xit('should handle MOCKS_FETCHING', () => {});
-    xit('should handle MOCKS_RECEIVED', () => {});
+    it('should handle MOCKS_FETCHING', () => {
+      expect(mocks(initialState, {
+        type: 'MOCKS_FETCHING'
+      }))
+      .to.eql({
+        error: null,
+        fetching: true,
+        mocks: [],
+        mock: {},
+        newMock: {}
+      });
+    });
+
+    it('should handle MOCKS_RECEIVED', () => {
+
+      const mockResult = [
+        { id: '001', title: 'title1', url: 'http://localhost:1234', method: 'GET', response: '{}'},
+        { id: '002', title: 'title2', url: 'http://localhost:1234/name', method: 'GET', response: '{}'},
+        { id: '003', title: 'title3', url: 'http://localhost:1234/name2', method: 'GET', response: '{}'}
+      ];
+      expect(mocks(initialState, {
+        type: 'MOCKS_RECEIVED',
+        payload: mockResult
+      }))
+      .to.eql({
+        error: null,
+        fetching: false,
+        mocks: mockResult,
+        mock: {},
+        newMock: {}
+      });
+    });
     xit('should handle MOCKS_FETCHING_ERROR', () => {});
   });
 

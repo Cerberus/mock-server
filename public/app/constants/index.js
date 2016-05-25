@@ -1,6 +1,11 @@
 const BASE_URL = 'http://localhost:5000';
 
-const Constants = {
+export const API = {
+  mocks: `${BASE_URL}/mocks`,
+  mock: `${BASE_URL}/mocks/:id`
+}
+
+export const Constants = {
 
   MOCKS_FETCHING: 'MOCKS_FETCHING',
   MOCKS_FETCHING_ERROR: 'MOCKS_FETCHING_ERROR',
@@ -15,5 +20,3 @@ const Constants = {
   MOCK_DELETED: 'MOCK_DELETED',
   MOCK_DELETE_ERROR: 'MOCK_DELETE_ERROR'
 }
-
-export default Constants
