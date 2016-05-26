@@ -92,8 +92,6 @@ let defaultGet = (req, res) => {
 
   const path = req.path;
 
-  let matched = path.match(/:\w+/g);
-
   Model
   .findOne({url: path, method: 'GET'})
   .exec((err, result) => {
