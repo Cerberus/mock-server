@@ -28,6 +28,15 @@ class MockShowView extends Component {
   render() {
     const { mock } = this.props
 
+
+    let jsonResponse;
+
+    if (mock.response) {
+      jsonResponse = JSON.stringify(JSON.parse(mock.response), null, 4) || ''
+    } else {
+      jsonResponse = mock.response
+    }
+
     return (
       <div className="container">
         <div className="columns">
@@ -76,7 +85,7 @@ class MockShowView extends Component {
                   <label className="form-label">Response</label>
                 </div>
                 <div className="column col-md-8">
-                  <textarea ref="response" defaultValue={mock.response} className="form-input" id="response" placeholder="JSON response" rows="5"/>
+                  <textarea ref="response" defaultValue={jsonResponse} className="form-input" id="response" placeholder="JSON response" rows="5"/>
                 </div>
               </div>
 

@@ -29593,6 +29593,14 @@
 	      var mock = this.props.mock;
 
 
+	      var jsonResponse = void 0;
+
+	      if (mock.response) {
+	        jsonResponse = JSON.stringify(JSON.parse(mock.response), null, 4) || '';
+	      } else {
+	        jsonResponse = mock.response;
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container' },
@@ -29715,7 +29723,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'column col-md-8' },
-	                  _react2.default.createElement('textarea', { ref: 'response', defaultValue: mock.response, className: 'form-input', id: 'response', placeholder: 'JSON response', rows: '5' })
+	                  _react2.default.createElement('textarea', { ref: 'response', defaultValue: jsonResponse, className: 'form-input', id: 'response', placeholder: 'JSON response', rows: '5' })
 	                )
 	              ),
 	              _react2.default.createElement(
