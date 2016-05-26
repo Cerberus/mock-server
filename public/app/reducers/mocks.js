@@ -14,7 +14,8 @@ export default function reducer(state = initState, action = {}) {
     case Constants.MOCKS_FETCHING:
       return {
         ...state,
-        fetching: true
+        fetching: true,
+        mock: {}
       }
 
     case Constants.MOCKS_RECEIVED:

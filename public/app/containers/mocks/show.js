@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchMock, editMock } from '../../actions/mocks';
 import { Link } from 'react-router';
+import { reduxForm } from 'redux-form';
 
 class MockShowView extends Component {
 
@@ -28,6 +29,11 @@ class MockShowView extends Component {
   render() {
     const { mock } = this.props
 
+    const { 
+      fields: {
+        name, method, url, response
+      }
+    } = this.props
 
     let jsonResponse;
 
@@ -52,7 +58,7 @@ class MockShowView extends Component {
                   <label className="form-label" for="name">Name</label>
                 </div>
                 <div className="column col-md-8">
-                  <input ref="name" defaultValue={mock.name} className="form-input" type="text" id="name" placeholder="Name" />
+                  <input ref="name" {...name} className="form-input" type="text" id="name" placeholder="Name" />
                 </div>
               </div>
 
@@ -61,7 +67,7 @@ class MockShowView extends Component {
                   <label className="form-label">Options</label>
                 </div>
                 <div className="column col-md-8">
-                  <select ref="method" className="form-select" defaultValue={mock.method}>
+                  <select ref="method" className="form-select" {...method}>
                       <option value="GET">GET</option>
                       <option value="POST">POST</option>
                       <option value="PUT">PUT</option>
@@ -76,7 +82,7 @@ class MockShowView extends Component {
                   <label className="form-label" for="endpoint">Endpoint</label>
                 </div>
                 <div className="column col-md-8">
-                  <input ref="url" defaultValue={mock.url} className="form-input" type="text" id="endpoint" placeholder="Endpoint" />
+                  <input ref="url" {...url} className="form-input" type="text" id="endpoint" placeholder="Endpoint" />
                 </div>
               </div>
 
@@ -85,7 +91,7 @@ class MockShowView extends Component {
                   <label className="form-label">Response</label>
                 </div>
                 <div className="column col-md-8">
-                  <textarea ref="response" defaultValue={jsonResponse} className="form-input" id="response" placeholder="JSON response" rows="5"/>
+                  <textarea ref="response" {...response} className="form-input" id="response" placeholder="JSON response" rows="5"/>
                 </div>
               </div>
 
@@ -104,5 +110,10 @@ class MockShowView extends Component {
 const mapStateToProps = (state) => ({
   mock: state.mocks.mock
 });
+
+MockShowView = reduxForm({
+  form: 'mockForm',
+  fields: ['name', 'method', 'url', 'response']
+})(MockShowView);
 
 export default connect(mapStateToProps)(MockShowView)
