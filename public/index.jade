@@ -1,40 +1,91 @@
-doctype html
 html
   head
-    link(rel='stylesheet', href='lib/bootstrap.css')
+    style
+      include css/bootstrap.css
     meta(charset='UTF-8')
-    title Demo JSON
-  container
-    body
-      div
-        form.form-horizontal
+    title Main page
+  body
+    container
+      button.btn.btn-default.btn-sm(button id="toggle") + New document
+      hidden
+        form.form-horizontal(name='form', method='POST',action='/')
           fieldset
             center
-              legend Header
+              legend Main page
             // NAME
             .form-group
               label.col-sm-2.control-label Name
               .col-sm-8
-                input.form-control(type='text', value='#{name}')
+                input.form-control(name='name', type='text', value='')
             // METHOD
             .form-group
               label.col-sm-2.control-label METHOD
               .col-sm-8
-                input.form-control(type='text', value='#{method}')
+                table
+                  tr
+                    td(width='100px')
+                      .radio
+                        label
+                          input#optionsRadios1(type='radio', name='method', value='GET')
+                          | GET
+                    td(width='100px')
+                      .radio
+                        label
+                          input#optionsRadios2(type='radio', name='method', value='POST')
+                          | POST
+                  tr
+                    td(width='100px')
+                      .radio
+                        label
+                          input#optionsRadios3(type='radio', name='method', value='PUT')
+                          | PUT
+                    td(width='100px')
+                      .radio
+                        label
+                          input#optionsRadios4(type='radio', name='method', value='DELETE')
+                          | DELETE
             // PATH
             .form-group
               label.col-sm-2.control-label URL
               .col-sm-8
-                input.form-control(type='text', value='#{url}')
+                input.form-control(name='url', type='text', value='')
             // TEXTAREA
             .form-group
               label.col-sm-2.control-label Textarea
               .col-sm-8
-                textarea.form-control(rows='3')
-                  |#{json}
-                span.help-block Press Enter or Submit to update.
+                textarea.form-control(name='response', rows='12')
+                span.help-block Press Tab then Space to SUBMIT.
             // SUBMIT
             .form-group
-              .col-sm-10.col-sm-offset-2
+              .col-sm-8.col-sm-offset-2
                 button.btn.btn-primary(type='submit') Submit
+
+
+      table.table.table-striped.table-hover
+        thead
+          tr
+            th #
+            th Name
+            th METHOD
+            th URL
+            th JSON
+        tbody
+          for model, index in models
+            tr(onclick='location.href=\'/edit?url='+model.url+'&method='+model.method+'\'')
+              td= index+1
+              td= model.name
+              td= model.method
+              td= model.url
+              td= model.response
+    
+    script(src='js/jquery.min.js')
+    script(src='js/bootstrap.js')
+    script(type="text/javascript").
+      $(document).ready(function(){
+      $("hidden").show();
+      });
+      $("#toggle").click(function(){
+      $("hidden").toggle();
+      });
+
 

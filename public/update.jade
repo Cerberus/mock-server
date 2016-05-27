@@ -1,0 +1,47 @@
+html
+  head
+    style
+      include css/bootstrap.css
+    meta(charset='UTF-8')
+    title Update page
+  body
+    container
+      form.form-horizontal(name='form', method='POST',action='/update')
+        fieldset
+          center
+            legend Update
+          // NAME
+          .form-group
+            label.col-sm-2.control-label Name
+            .col-sm-8
+              input.form-control(name='name', type='text', value='#{name}')
+          // METHOD
+          .form-group
+            label.col-sm-2.control-label METHOD
+            .col-sm-8
+              .radio
+                label
+                  input#optionsRadios1(type='radio', name='method', value='GET', checked=(method=='GET'))
+                  | GET
+              .radio
+                label
+                  input#optionsRadios2(type='radio', name='method', value='POST', checked=(method=='POST'))
+                  | POST
+          // PATH
+          .form-group
+            label.col-sm-2.control-label URL
+            .col-sm-8
+              input.form-control(name='url', type='text', value='#{url}')
+          // TEXTAREA
+          .form-group
+            label.col-sm-2.control-label Textarea
+            .col-sm-8
+              textarea.form-control(name='response', rows='12')
+                |#{json}
+              span.help-block Press Tab then Space to SUBMIT.
+          // SUBMIT
+          .form-group
+            .col-sm-8.col-sm-offset-2
+              button.btn.btn-primary(type='submit') Submit
+
+
