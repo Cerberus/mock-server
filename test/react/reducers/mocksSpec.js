@@ -50,7 +50,19 @@ describe('Mocks Reducers', () => {
         newMock: {}
       });
     });
-    xit('should handle MOCKS_FETCHING_ERROR', () => {});
+    it('should handle MOCKS_FETCHING_ERROR', () => {
+      expect(mocks(initialState, {
+        type: 'MOCKS_FETCHING_ERROR',
+        error: 'something went wrong'
+      }))
+      .to.eql({
+        error: 'something went wrong',
+        fetching: false,
+        mocks: [],
+        mock: {},
+        newMock: {}
+      });
+    });
   });
 
   describe('Mock', () => {
@@ -79,10 +91,85 @@ describe('Mocks Reducers', () => {
         newMock: {}
       });
     });
-    xit('should handle MOCK_FETCHING_ERROR', () => {});
-    xit('should handle MOCK_CREATED', () => {});
-    xit('should handle MOCK_EDITED', () => {});
-    xit('should handle MOCK_DELETE', () => {});
+    it('should handle MOCK_FETCHING_ERROR', () => {
+      expect(mocks(initialState, {
+        type: 'MOCK_FETCHING_ERROR',
+        error: 'something went wrong'
+      }))
+      .to.eql({
+        error: 'something went wrong',
+        fetching: false,
+        mocks: [],
+        mock: {},
+        newMock: {}
+      });
+    });
+    it('should handle MOCK_CREATED', () => {
+
+      expect(mocks(initialState, {
+        type: 'MOCK_CREATED',
+        payload: {
+          id: 1,
+          name: 'test',
+          method: 'GET',
+          url: '/api/test',
+          response: {}
+        }
+      }))
+      .to.eql({
+        error: null,
+        fetching: false,
+        mock: {
+          id: 1,
+          name: 'test',
+          method: 'GET',
+          url: '/api/test',
+          response: {}
+        },
+        mocks: [],
+        newMock: {}
+      });
+    });
+    it('should handle MOCK_EDITED', () => {
+
+      expect(mocks(initialState, {
+        type: 'MOCK_EDITED',
+        payload: {
+          id: 1,
+          name: 'test after edited',
+          method: 'GET',
+          url: '/api/test',
+          response: {}
+        }
+      }))
+      .to.eql({
+        error: null,
+        fetching: false,
+        mocks: [],
+        newMock: {},
+        mock: {
+          id: 1,
+          name: 'test after edited',
+          method: 'GET',
+          url: '/api/test',
+          response: {}
+        }
+      });
+    });
+    it('should handle MOCK_DELETE', () => {
+
+      expect(mocks(initialState, {
+        type: 'MOCK_DELETED',
+        payload: { message: 'deleted'}
+      }))
+      .to.eql({
+        fetching: false,
+        error: null,
+        mock: {},
+        mocks: [],
+        newMock: {}
+      });
+    });
   });
 
 });

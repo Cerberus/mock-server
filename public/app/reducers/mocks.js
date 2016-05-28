@@ -18,6 +18,13 @@ export default function reducer(state = initState, action = {}) {
         mock: {}
       }
 
+    case Constants.MOCKS_FETCHING_ERROR:
+      return {
+        ...state,
+        fetching: false,
+        error: action.error
+      }
+
     case Constants.MOCKS_RECEIVED:
       return {
         ...state,
@@ -30,6 +37,37 @@ export default function reducer(state = initState, action = {}) {
         ...state,
         fetching: false,
         mock: action.payload
+      }
+
+    case Constants.MOCK_FETCHING_ERROR:
+      return {
+        ...state,
+        fetching: false,
+        error: action.error
+      }
+
+    case Constants.MOCK_CREATED:
+      return {
+        ...state,
+        fetching: false,
+        mock: action.payload
+      }
+
+    case Constants.MOCK_EDITED:
+      return {
+        ...state,
+        fetching: false,
+        mock: action.payload
+      }
+
+    case Constants.MOCK_DELETED:
+      return {
+        ...state,
+        fetching: false,
+        error: null,
+        mock: {},
+        mocks: [],
+        newMock: {}
       }
 
     default:
