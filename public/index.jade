@@ -5,11 +5,11 @@ html
       include css/td.css
       include dist/json-formatter.min.css
       script (src='bower_components/angular-sanitize/angular-sanitize.js')
-
+    link(rel='stylesheet', href='dist/json-formatter.min.css')
     meta(charset='UTF-8')
     title Main page
-  body(ng-app='myApp')
-    div(class='container', ng-controller='MainController')
+  body
+    div(class='container')
       button.btn.btn-link.btn-lg(button id="toggle") + New document
       hidden
         form.form-horizontal(name='form', method='POST',action='/')
@@ -54,18 +54,19 @@ html
               .col-sm-8
                 input.form-control(name='url', type='text', value='')
             // TEXTAREA
-            .form-group
+            .form-group#App1(ng-app='demo' ng-controller='MainCtrl')
               label.col-sm-2.control-label JSON
-              .col-sm-8
-                textarea.form-control(name='response', rows='12')
-                span.help-block Double Tab then Space to Submit.
+              .result.col-sm-8
+                textarea.col-xs-6.jsonFormatter(ng-model='textarea')
+                .col-xs-6.jsonFormatter
+                  json-formatter(json='textareaJson', open='1')
             // SUBMIT
             .form-group
               .col-sm-8.col-sm-offset-2
                 button.btn.btn-default(type='reset') Clear
                 button.btn.btn-primary(type='submit') Submit
 
-      div
+      div#App2(ng-app='myApp', ng-controller='MainController')
         table(table-layout='fixed')
           tr
             td Search :
@@ -102,6 +103,8 @@ html
                        
 
     script(src='js/jquery.min.js')
+    script(src='bower_components/angular/angular.js')
+    script(src='bower_components/angular-sanitize/angular-sanitize.js')
     script(src='js/bootstrap.js')
     script(type="text/javascript").
       $(document).ready(function(){
@@ -114,7 +117,14 @@ html
       $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();   
       });
-    script(type='text/javascript',src='lib/angular/angular.min.js')
+    //- script(type='text/javascript',src='lib/angular/angular.min.js')
     script(type='text/javascript',src='lib/angular-ui-router/release/angular-ui-router.min.js')
     //- script(type='text/javascript',src='js/ui-bootstrap-tpls.min.js')
     script(type='text/javascript',src='lib/app.js')
+
+    script(src='dist/json-formatter.min.js')
+    script(type='text/javascript',src='demo.js')
+    style.
+      .jsonFormatter {
+      height:300px;
+      }

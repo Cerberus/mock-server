@@ -9,3 +9,4 @@ app.controller('MainCtrl', function ($scope, $http, JSONFormatterConfig) {
     } catch (e) {}
   });
 });
+angular.bootstrap(document.getElementById("App2"), ['myApp']);
