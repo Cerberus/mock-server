@@ -3,7 +3,13 @@
 Keep it simple, stupid Nextzy mock response
 
 
-## Usage
+## 2 Versions
+
+- [Version 1 : built with Angular](https://github.com/Phonbopit/nextzy-json-kiss/tree/add_jade) (branch `add_jade`)
+- [Version 2 : built with React](https://github.com/Phonbopit/nextzy-json-kiss/tree/mock-with-react) (branch `mock-with-react`)
+
+
+## Version 2 built with React Usage
 
 ```
 cp .env.example .env
