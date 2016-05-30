@@ -4,3 +4,7 @@ td {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.tooltip-inner {
+    max-width: initial;
+    font-size: 16px;
+}

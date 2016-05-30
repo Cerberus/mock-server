@@ -6,6 +6,7 @@ html
     title Update page
   body
     container
+      button.btn.btn-link.btn-lg(onclick='location.href=\'/\'') back to Main page
       form.form-horizontal(name='form', method='POST',action='/update')
         fieldset
           center
@@ -14,19 +15,34 @@ html
           .form-group
             label.col-sm-2.control-label Name
             .col-sm-8
-              input.form-control(name='name', type='text', value='#{name}')
+              input.form-control(disabled="", name='name', type='text', value='#{name}')
           // METHOD
           .form-group
             label.col-sm-2.control-label METHOD
             .col-sm-8
-              .radio
-                label
-                  input#optionsRadios1(type='radio', name='method', value='GET', checked=(method=='GET'))
-                  | GET
-              .radio
-                label
-                  input#optionsRadios2(type='radio', name='method', value='POST', checked=(method=='POST'))
-                  | POST
+              table
+                tr
+                  td(width='100px')
+                    .radio
+                      label
+                        input#optionsRadios1(type='radio', name='method', value='GET', checked=(method=='GET'))
+                        | GET
+                  td(width='100px')
+                    .radio
+                      label
+                        input#optionsRadios2(type='radio', name='method', value='POST', checked=(method=='POST'))
+                        | POST
+                tr
+                  td(width='100px')
+                    .radio
+                      label
+                        input#optionsRadios3(type='radio', name='method', value='PUT', checked=(method=='PUT'))
+                        | PUT
+                  td(width='100px')
+                    .radio
+                      label
+                        input#optionsRadios4(type='radio', name='method', value='DELETE', checked=(method=='DELETE'))
+                        | DELETE
           // PATH
           .form-group
             label.col-sm-2.control-label URL
@@ -34,14 +50,18 @@ html
               input.form-control(name='url', type='text', value='#{url}')
           // TEXTAREA
           .form-group
-            label.col-sm-2.control-label Textarea
+            label.col-sm-2.control-label JSON
             .col-sm-8
               textarea.form-control(name='response', rows='12')
                 |#{json}
-              span.help-block Press Tab then Space to SUBMIT.
+              span.help-block Double Tab then Space to SUBMIT.
           // SUBMIT
           .form-group
             .col-sm-8.col-sm-offset-2
+              button.btn.btn-default(type='reset') Reset
               button.btn.btn-primary(type='submit') Submit
+
+    script(src='/lib/angular/angular.min.js')
+    script(src='/lib/angular-ui-router/release/angular-ui-router.min.js')
 
 

@@ -2,11 +2,12 @@ html
   head
     style
       include css/bootstrap.css
+      include css/td.css
     meta(charset='UTF-8')
     title Main page
-  body
-    container
-      button.btn.btn-default.btn-sm(button id="toggle") + New document
+  body(ng-app='myApp')
+    div(class='container', ng-controller='MainController')
+      button.btn.btn-link.btn-lg(button id="toggle") + New document
       hidden
         form.form-horizontal(name='form', method='POST',action='/')
           fieldset
@@ -51,41 +52,68 @@ html
                 input.form-control(name='url', type='text', value='')
             // TEXTAREA
             .form-group
-              label.col-sm-2.control-label Textarea
+              label.col-sm-2.control-label JSON
               .col-sm-8
                 textarea.form-control(name='response', rows='12')
-                span.help-block Press Tab then Space to SUBMIT.
+                span.help-block Double Tab then Space to Submit.
             // SUBMIT
             .form-group
               .col-sm-8.col-sm-offset-2
+                button.btn.btn-default(type='reset') Clear
                 button.btn.btn-primary(type='submit') Submit
 
-
-      table.table.table-striped.table-hover
-        thead
+      div
+        table(table-layout='fixed')
           tr
-            th #
-            th Name
-            th METHOD
-            th URL
-            th JSON
-        tbody
-          for model, index in models
-            tr(onclick='location.href=\'/edit?url='+model.url+'&method='+model.method+'\'')
-              td= index+1
-              td= model.name
-              td= model.method
-              td= model.url
-              td= model.response
-    
+            td Search :
+            td(width='200px')
+              input(class="form-control",type='text',ng-model='name')
+        table.table.table-striped.table-hover(class="with-ellipsis",style="width:100%")
+          thead
+            tr
+              th #
+              th Name
+              th METHOD
+              th URL
+              th
+                center JSON
+              th
+              th
+          tbody
+            tr(ng-repeat="model in models | filter : name")
+              td(width='3%') {{$index+1}}
+              td(width='12%') {{model.name}}
+              td(width='7%') {{model.method}}
+              td(width='15%') {{model.url}}
+              td(width='400px')
+                button(type='button' class='btn btn-link btn-sm' data-toggle="tooltip", title="{{model.response}}", tooltip-loader) 🔎
+                | {{model.response}}
+              td(width='50px')
+                a(ng-href="/edit?url={{model.url}}&method={{model.method}}")
+                  b [ Edit ]
+              td(width='75px')
+                a(ng-href="/delete?url={{model.url}}&method={{model.method}}",onclick="return confirm('Are you sure to delete this item?');")
+                  font(color = 'red')
+                    b [ Delete ]
+
     script(src='js/jquery.min.js')
     script(src='js/bootstrap.js')
     script(type="text/javascript").
       $(document).ready(function(){
-      $("hidden").show();
+      $("hidden").hide();
       });
       $("#toggle").click(function(){
       $("hidden").toggle();
       });
+    script.
+      $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();   
+      });
+    script(type='text/javascript',src='lib/angular/angular.min.js')
+    script(type='text/javascript',src='lib/angular-ui-router/release/angular-ui-router.min.js')
+    //- script(type='text/javascript',src='js/ui-bootstrap-tpls.min.js')
+    script(type='text/javascript',src='lib/app.js')
+
+
 
 
