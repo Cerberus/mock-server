@@ -1,0 +1,14 @@
+{
+  "name": "public",
+  "homepage": "https://github.com/Phonbopit/nextzy-json-kiss",
+  "authors": [
+    "thanawat <tha_chookes@hotmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "dependencies": {
+    "json-formatter": "^0.6.0"
+  }
+}

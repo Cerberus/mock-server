@@ -95,7 +95,7 @@ app.get('/delete', (req, res) => { //route to add document
 })
 
 app.post('/', (req, res) => { //route to add document
-  
+
   if(!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
   Model
@@ -117,7 +117,7 @@ app.post('/', (req, res) => { //route to add document
 })
 
 app.post('/update', (req, res) => { //route to update document
-  
+
   if(!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
   req.body.response = JSON.stringify(JSON.parse(req.body.response))

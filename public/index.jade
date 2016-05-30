@@ -3,6 +3,9 @@ html
     style
       include css/bootstrap.css
       include css/td.css
+      include dist/json-formatter.min.css
+      script (src='bower_components/angular-sanitize/angular-sanitize.js')
+
     meta(charset='UTF-8')
     title Main page
   body(ng-app='myApp')
@@ -94,7 +97,9 @@ html
               td(width='75px')
                 a(ng-href="/delete?url={{model.url}}&method={{model.method}}",onclick="return confirm('Are you sure to delete this item?');")
                   font(color = 'red')
-                    b [ Delete ]
+                    b [ Delete ]   
+    
+                       
 
     script(src='js/jquery.min.js')
     script(src='js/bootstrap.js')
@@ -113,7 +118,3 @@ html
     script(type='text/javascript',src='lib/angular-ui-router/release/angular-ui-router.min.js')
     //- script(type='text/javascript',src='js/ui-bootstrap-tpls.min.js')
     script(type='text/javascript',src='lib/app.js')
-
-
-
-
