@@ -4,6 +4,7 @@ html
       include css/bootstrap.css
       include css/td.css
       include dist/json-formatter.min.css
+    script(type='text/javascript',src='lib/angular/angular.min.js')
     script(src='bower_components/angular-sanitize/angular-sanitize.js')
     link(rel='stylesheet', href='dist/json-formatter.min.css')
     meta(charset='UTF-8')
@@ -13,7 +14,7 @@ html
       button.btn.btn-link.btn-lg(button id="toggle") + New document
       hidden
         form.form-horizontal(name='form', method='POST',action='/')
-          fieldset
+          fieldset(ng-app='demo')
             center
               legend Main page
             // NAME
@@ -53,13 +54,30 @@ html
               label.col-sm-2.control-label URL
               .col-sm-8
                 input.form-control(name='url', type='text', value='')
+            // TYPE
+            .form-group
+              label.col-sm-2.control-label TYPE
+              .col-sm-8
+                table
+                  tr
+                    td(width='100px')
+                      .radio
+                        label
+                          input#optionsRadios1(type='radio', name='type', ng-model="formtype", value='json', checked="checked" )
+                          | JSON
+                    td(width='100px')
+                      .radio
+                        label
+                          input#optionsRadios2(type='radio', name='type', ng-model="formtype", value='xml')
+                          | XML
             // TEXTAREA
-            .form-group#App1(ng-app='demo',text='{}', ng-controller='MainCtrl')
-              label.col-sm-2.control-label JSON
+            .form-group(text='', ng-controller='MainCtrl')
+              label.col-sm-2.control-label Content
               .result.col-sm-8
-                textarea.col-xs-6.jsonFormatter(name='response', ng-model='textarea')
-                .col-xs-6.jsonFormatter
-                  json-formatter(json='textareaJson', open='1')
+                textarea.col-xs-6.jsonFormatter(name='response', ng-model='textarea') 
+                div(ng-show="formtype=='json'")
+                  .col-xs-6.jsonFormatter
+                    json-formatter(json='textareaJson', open='1')
             // SUBMIT
             .form-group
               .col-sm-8.col-sm-offset-2
@@ -90,8 +108,9 @@ html
               td(width='7%') {{model.method}}
               td(width='15%') {{model.url}}
               td(width='400px')
-                button(type='button' class='btn btn-link btn-sm' data-toggle="tooltip", title="{{model.response}}", tooltip-loader) 🔎
-                | {{model.response}}
+                div(title="{{model.response}}" )
+                  button(value = '{{model.response}}',type='button' class='btn btn-link btn-sm' onclick="preview(value)") 🔎
+                  | {{model.response}}
               td(width='50px')
                 a(ng-href="/edit?name={{model.name}}")
                   b [ Edit ]
@@ -100,10 +119,8 @@ html
                   font(color = 'red')
                     b [ Delete ]   
     
-                       
-
     script(src='js/jquery.min.js')
-    script(src='bower_components/angular/angular.js')
+    //- script(src='bower_components/angular/angular.js')
     script(src='bower_components/angular-sanitize/angular-sanitize.js')
     script(src='js/bootstrap.js')
     script(type="text/javascript").
@@ -128,3 +145,7 @@ html
       .jsonFormatter {
       height:300px;
       }
+    script.
+      function preview(str){
+      alert(str)
+      }   

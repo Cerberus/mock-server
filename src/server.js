@@ -43,14 +43,14 @@ app.get('/', (req, res) => { //route to list all
 })
 
 app.get('/data', function(req, res) {
+
     Model.find({
     },
     function (err,models) {
       models.forEach(function (model){//pretty json for quick view
-        model.response = JSON.stringify(JSON.parse(model.response),null, 2)
-        console.log(model.response);
+        if(model.type === 'json')
+          model.response = JSON.stringify(JSON.parse(model.response),null, 2)
       })
-      // console.log(models);
       if(err)
         return res.json({})
       res.json(models)
@@ -67,12 +67,17 @@ app.get('/edit', (req, res) => { //route to edit file
     if (err) return err;
 
     if (result) {
-      console.log(`found result` + result);
-      const response = JSON.stringify(JSON.parse(result.response),null, '\t');
+      console.log('result.type : ' + result.type);
+      let response = '';
+      if(req.body.type === 'json')
+        response = JSON.stringify(JSON.parse(result.response),null, '\t');
+      else
+        response = result.response
       return res.render('update',{
               name   : result.name,
               method : result.method,
               url    : result.url,
+              type   : result.type,
               json   : response
             });
     } else {
@@ -97,8 +102,8 @@ app.get('/delete', (req, res) => { //route to add document
 })
 
 app.post('/', (req, res) => { //route to add document
-  console.log(req.body.response);
-  if(!check(req.body.response))
+
+  if(req.body.type==='json'&&!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
   Model
   .findOne({url: req.body.url, method: req.body.method}
@@ -106,7 +111,8 @@ app.post('/', (req, res) => { //route to add document
     if(!result)
     {
       var model = new Model(req.body);
-      req.body.response = JSON.stringify(JSON.parse(req.body.response))
+      if(req.body.type === 'json')
+        model.response = JSON.stringify(JSON.parse(req.body.response))
       model.save(function (err, result) {
       if(err)
         return res.send('Error to add, Duplicate name.')
@@ -120,9 +126,10 @@ app.post('/', (req, res) => { //route to add document
 
 app.post('/update', (req, res) => { //route to update document
 
-  if(!check(req.body.response))
+  if(req.body.type==='json'&&!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
-  req.body.response = JSON.stringify(JSON.parse(req.body.response))
+  if(req.body.type === 'json')
+    req.body.response = JSON.stringify(JSON.parse(req.body.response))
 
   Model
   .findOneAndUpdate({name:req.body.name}

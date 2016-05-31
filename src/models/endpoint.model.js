@@ -18,6 +18,10 @@ let EndpointSchema = new Schema({
     required: true,
     lowercase: true
   },
+  type: {
+    type: String,
+    required: true
+  },
   response: {
     type: String,
     required: true

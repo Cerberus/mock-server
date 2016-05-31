@@ -30,5 +30,4 @@ app.controller('logContoller',function ($scope, $http,$interval) {
       getData()
   },1000)
   $scope.test = "scope"
-
 })
