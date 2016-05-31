@@ -10,6 +10,22 @@ html
     meta(charset='UTF-8')
     title Main page
   body
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-2')
+            span.sr-only Toggle navigation
+          .navbar-brand Nextzy
+        #bs-example-navbar-collapse-2.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li.active
+              a(href='/')
+                | Main page
+            li
+              a(href='/log.html') Log history
+    br
+    br
+    br
     .container
       button.btn.btn-link.btn-lg(button id="toggle") + New document
       hidden
