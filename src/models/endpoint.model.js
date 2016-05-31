@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 let EndpointSchema = new Schema({
   name: {
     type: String,
+    unique: true,
     required: true
   },
   method: {
@@ -15,9 +16,11 @@ let EndpointSchema = new Schema({
   url: {
     type: String,
     required: true,
-    unique: true,
-    lowercase: true,
-    index: { unique: true }
+    lowercase: true
+  },
+  type: {
+    type: String,
+    required: true
   },
   response: {
     type: String,
