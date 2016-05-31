@@ -105,6 +105,8 @@ app.post('/', (req, res) => { //route to add document
 
   if(req.body.type==='json'&&!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
+  if(req.body.url.charAt(0)!='/')
+    req.body.url = '/' + req.body.url
   Model
   .findOne({url: req.body.url, method: req.body.method}
   ,function (err, result) {
@@ -130,7 +132,8 @@ app.post('/update', (req, res) => { //route to update document
     return res.send('Detect wrong JSON format. Back to edit JSON')
   if(req.body.type === 'json')
     req.body.response = JSON.stringify(JSON.parse(req.body.response))
-
+  if(req.body.url.charAt(0)!='/')
+    req.body.url = '/' + req.body.url
   Model
   .findOneAndUpdate({name:req.body.name}
   ,req.body,
@@ -175,7 +178,7 @@ app.get('*', (req, res) => {
       if(result.type==='json'){
         return res.json(JSON.parse(result.response));
       } else {
-      res.set('Content-Type', 'text/xml');
+      res.set('Content-Type', 'application/xml');
       return res.send(result.response)
       }
     } else {
@@ -203,7 +206,7 @@ app.post('*', (req, res) => {
       if(result.type==='json'){
         return res.json(JSON.parse(result.response));
       } else {
-      res.set('Content-Type', 'text/xml');
+      res.set('Content-Type', 'application/xml');
       return res.send(result.response)
       }
     } else {
@@ -231,7 +234,7 @@ app.put('*', (req, res) => {
       if(result.type==='json'){
         return res.json(JSON.parse(result.response));
       } else {
-      res.set('Content-Type', 'text/xml');
+      res.set('Content-Type', 'application/xml');
       return res.send(result.response)
       }
     } else {
@@ -259,7 +262,7 @@ app.delete('*', (req, res) => {
       if(result.type==='json'){
         return res.json(JSON.parse(result.response));
       } else {
-      res.set('Content-Type', 'text/xml');
+      res.set('Content-Type', 'application/xml');
       return res.send(result.response)
       }
     } else {
