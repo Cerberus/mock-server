@@ -172,7 +172,12 @@ app.get('*', (req, res) => {
   .exec((err, result) => {
     if (err) return err;
     if (result) {
-      return res.json(JSON.parse(result.response));
+      if(result.type==='json'){
+        return res.json(JSON.parse(result.response));
+      } else {
+      res.set('Content-Type', 'text/xml');
+      return res.send(result.response)
+      }
     } else {
       res.status(404).send('Not found');
     }
@@ -195,7 +200,12 @@ app.post('*', (req, res) => {
   .exec((err, result) => {
     if (err) return err;
     if (result) {
-      return res.json(JSON.parse(result.response));
+      if(result.type==='json'){
+        return res.json(JSON.parse(result.response));
+      } else {
+      res.set('Content-Type', 'text/xml');
+      return res.send(result.response)
+      }
     } else {
       res.status(404).send('Not found');
     }
@@ -218,7 +228,12 @@ app.put('*', (req, res) => {
   .exec((err, result) => {
     if (err) return err;
     if (result) {
-      return res.json(JSON.parse(result.response));
+      if(result.type==='json'){
+        return res.json(JSON.parse(result.response));
+      } else {
+      res.set('Content-Type', 'text/xml');
+      return res.send(result.response)
+      }
     } else {
       res.status(404).send('Not found');
     }
@@ -241,7 +256,12 @@ app.delete('*', (req, res) => {
   .exec((err, result) => {
     if (err) return err;
     if (result) {
-      return res.json(JSON.parse(result.response));
+      if(result.type==='json'){
+        return res.json(JSON.parse(result.response));
+      } else {
+      res.set('Content-Type', 'text/xml');
+      return res.send(result.response)
+      }
     } else {
       res.status(404).send('Not found');
     }
