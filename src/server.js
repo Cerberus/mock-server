@@ -61,11 +61,12 @@ app.get('/edit', (req, res) => { //route to edit file
   // console.log('edit');
   // console.log('url : ' + req.query.url + 'method : ' + req.query.method);
   Model
-  .findOne({url: req.query.url, method: req.query.method})
+  .findOne({name:req.query.name})
   .exec((err, result) => {
     if (err) return err;
 
     if (result) {
+      console.log(`found result` + result);
       const response = JSON.stringify(JSON.parse(result.response),null, '\t');
       return res.render('update',{
               name   : result.name,
@@ -83,7 +84,7 @@ app.get('/edit', (req, res) => { //route to edit file
 app.get('/delete', (req, res) => { //route to add document
   // console.log('url : ' + req.query.url + ' method : ' + req.query.method);
   Model
-  .remove({url: req.query.url, method: req.query.method }
+  .remove({name:req.query.name}
   ,function (err, result){
      if (result) {
       console.log(result);
@@ -95,7 +96,7 @@ app.get('/delete', (req, res) => { //route to add document
 })
 
 app.post('/', (req, res) => { //route to add document
-
+  console.log(req.body.response);
   if(!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
   Model
@@ -107,12 +108,12 @@ app.post('/', (req, res) => { //route to add document
       req.body.response = JSON.stringify(JSON.parse(req.body.response))
       model.save(function (err, result) {
       if(err)
-        return res.send('Error to add, may duplicate name error.')
+        return res.send('Error to add, Duplicate name.')
       return res.redirect('/')
       })
     }
     else
-      return res.send('Duplicate key error collection, back to edit Method or url path')
+      return res.send('Duplicate Method or url')
   })
 })
 
@@ -121,7 +122,7 @@ app.post('/update', (req, res) => { //route to update document
   if(!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
   req.body.response = JSON.stringify(JSON.parse(req.body.response))
-  console.log(req.body.response);
+
   Model
   .findOneAndUpdate({name:req.body.name}
   ,req.body,

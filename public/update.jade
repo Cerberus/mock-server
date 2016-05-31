@@ -1,12 +1,13 @@
-html(ng-app='demo')
+html
   head
+    style
+      include css/bootstrap.css
     script(src='bower_components/angular/angular.js')
     script(src='bower_components/angular-sanitize/angular-sanitize.js')
-    link(rel='stylesheet', href='bower_components/bootstrap/dist/css/bootstrap.css')
     link(rel='stylesheet', href='dist/json-formatter.min.css')
     meta(charset='UTF-8')
     title Update page
-  body(ng-controller='MainCtrl')
+  body
     .container
       button.btn.btn-link.btn-lg(onclick="location.href='/'") back to Main page
       form.form-horizontal(name='form', method='POST', action='/update')
@@ -17,7 +18,7 @@ html(ng-app='demo')
           .form-group
             label.col-sm-2.control-label Name
             .col-sm-8
-              input.form-control(disabled='', name='name', type='text', value='')
+              input.form-control(readonly, name='name', type='text', value='#{name}')
           // METHOD
           .form-group
             label.col-sm-2.control-label METHOD
@@ -27,34 +28,34 @@ html(ng-app='demo')
                   td(width='100px')
                     .radio
                       label
-                        input#optionsRadios1(type='radio', name='method', value='GET')
+                        input#optionsRadios1(type='radio', name='method', value='GET', checked=(method=='GET'))
                         | GET
                   td(width='100px')
                     .radio
                       label
-                        input#optionsRadios2(type='radio', name='method', value='POST')
+                        input#optionsRadios2(type='radio', name='method', value='POST', checked=(method=='POST'))
                         | POST
                 tr
                   td(width='100px')
                     .radio
                       label
-                        input#optionsRadios3(type='radio', name='method', value='PUT')
+                        input#optionsRadios3(type='radio', name='method', value='PUT', checked=(method=='PUT'))
                         | PUT
                   td(width='100px')
                     .radio
                       label
-                        input#optionsRadios4(type='radio', name='method', value='DELETE')
+                        input#optionsRadios4(type='radio', name='method', value='DELETE', checked=(method=='DELETE'))
                         | DELETE
           // PATH
           .form-group
             label.col-sm-2.control-label URL
             .col-sm-8
-              input.form-control(name='url', type='text', value='undefined')
+              input.form-control(name='url', type='text', value='#{url}')
           // TEXTAREA
-          .form-group
+          .form-group(ng-app='demo',text='#{json}' , ng-controller='MainCtrl')
             label.col-sm-2.control-label JSON
             .result.col-sm-8
-              textarea.col-xs-6.jsonFormatter(ng-model='textarea')
+              textarea.col-xs-6.jsonFormatter(name='response', ng-model='textarea')
               .col-xs-6.jsonFormatter
                 json-formatter(json='textareaJson', open='1')
           // SUBMIT
@@ -62,6 +63,10 @@ html(ng-app='demo')
             .col-sm-8.col-sm-offset-2
               button.btn.btn-default(type='reset') Reset
               button.btn.btn-primary(type='submit') Submit
+    script(type='text/javascript',src='lib/angular-ui-router/release/angular-ui-router.min.js')
+    //- script(type='text/javascript',src='js/ui-bootstrap-tpls.min.js')
+    script(type='text/javascript',src='lib/app.js')
+
     script(src='dist/json-formatter.min.js')
     script(src='demo.js')
     style.
