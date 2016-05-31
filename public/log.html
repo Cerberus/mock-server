@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <script src="bower_components/angular/angular.js"></script>
+  <title>Log Access</title>
+</head>
+<body ng-app='myApp', ng-controller='logContoller as app'>
+  <div class="container">
+    <h1>Log History</h1>
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      <th><h4>PATH( / )</h4></th>
+      <th><h4>Method</h4></th>
+      <th><h4>IP ADDRESS</h4></th>
+      <th><h4>Time</h4></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat = "log in logs" >
+      <td><h5>{{log.path}}</h5></td>
+      <td><h5>{{log.methods}}</h5></td>
+      <td><h5>{{log.IP}}</h5></td>
+      <td><h5>{{toTime(log.timestamp)}}</h5></td>
+    </tr>
+  </tbody>
+</table>
+  </div>
+  <script src="lib/app.js"> </script>
+</body>
+</html>

@@ -8,6 +8,7 @@ const db = require('./db')() // invoke db.
 const { APP_PORT } = require('./config');
 const Model = require('./models/endpoint.model.js');
 const Group = require('./models/group.model.js');
+const Log = require('./models/log.model.js');
 
 var bodyParser = require('body-parser');
 
@@ -138,23 +139,48 @@ app.post('/update', (req, res) => { //route to update document
 // match /service/mobile/12345
 // match /service/mobile/55555
 // match /service/mobile/:mobileNo
+app.get('/log', function (req, res, next) {
+    Log.find({}).exec(function (err, results) {
+      if (err) {
+        res.status(500).send(err)
+      } else {
+        res.send(results)
+      }
+    })
+  });
 
 app.get('*', (req, res) => {
   const path = req.path;
+  var logData = { methods : 'GET',path : req.path, IP : req.headers.host }
+  var obj = new Log(logData)
+    obj.save(function (err, obj) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        console.log(obj);
+      }
+    })
   Model
   .findOne({url: path, method: 'GET'})
   .exec((err, result) => {
     if (err) return err;
     if (result) {
       return res.json(JSON.parse(result.response));
-    } else {
-      res.status(404).send('Not found');
     }
   });
 });
 
 app.post('*', (req, res) => {
   const path = req.path;
+  var logData = { methods : 'POST',path : req.path, IP : req.headers.host }
+  var obj = new Log(logData)
+    obj.save(function (err, obj) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        console.log(obj);
+      }
+    })
   Model
   .findOne({url: path, method: 'POST'})
   .exec((err, result) => {
@@ -169,6 +195,15 @@ app.post('*', (req, res) => {
 
 app.put('*', (req, res) => {
   const path = req.path;
+  var logData = { methods : 'GET',path : req.path, IP : req.headers.host }
+  var obj = new Log(logData)
+    obj.save(function (err, obj) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        console.log(obj);
+      }
+    })
   Model
   .findOne({url: path, method: 'GET'})
   .exec((err, result) => {
@@ -182,6 +217,15 @@ app.put('*', (req, res) => {
 });
 
 app.delete('*', (req, res) => {
+  var logData = { methods : 'GET',path : req.path, IP : req.headers.host }
+  var obj = new Log(logData)
+    obj.save(function (err, obj) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        console.log(obj);
+      }
+    })
   const path = req.path;
   Model
   .findOne({url: path, method: 'POST'})
@@ -194,6 +238,8 @@ app.delete('*', (req, res) => {
     }
   });
 });
+
+
 
 app.listen(APP_PORT, function () {
   console.log(`App listening on port ${APP_PORT}!`);
