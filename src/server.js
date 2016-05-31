@@ -67,7 +67,7 @@ app.get('/edit', (req, res) => { //route to edit file
     if (err) return err;
 
     if (result) {
-      console.log('result.type : ' + result.type);
+      // console.log('result.type : ' + result.type);
       let response = '';
       if(req.body.type === 'json')
         response = JSON.stringify(JSON.parse(result.response),null, '\t');

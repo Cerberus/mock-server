@@ -8,12 +8,28 @@ html
     meta(charset='UTF-8')
     title Update page
   body
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-2')
+            span.sr-only Toggle navigation
+          .navbar-brand Nextzy
+        #bs-example-navbar-collapse-2.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a(href='/')
+                b Main page
+            li
+              a(href='/log.html')
+                b Log history
+    br
+    br
+    br
     .container
-      button.btn.btn-link.btn-lg(onclick="location.href='/'") back to Main page
       form.form-horizontal(name='form', method='POST', action='/update')
         fieldset(ng-app='demo')
           center
-            legend Update
+            legend Update form
           // NAME
           .form-group
             label.col-sm-2.control-label Name

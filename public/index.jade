@@ -20,9 +20,10 @@ html
           ul.nav.navbar-nav
             li.active
               a(href='/')
-                | Main page
+                b Main page
             li
-              a(href='/log.html') Log history
+              a(href='/log.html')
+                b Log history
     br
     br
     br
@@ -32,7 +33,7 @@ html
         form.form-horizontal(name='form', method='POST',action='/')
           fieldset(ng-app='demo')
             center
-              legend Main page
+              legend New form
             // NAME
             .form-group
               label.col-sm-2.control-label Name
