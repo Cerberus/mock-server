@@ -173,6 +173,8 @@ app.get('*', (req, res) => {
     if (err) return err;
     if (result) {
       return res.json(JSON.parse(result.response));
+    } else {
+      res.status(404).send('Not found');
     }
   });
 });
