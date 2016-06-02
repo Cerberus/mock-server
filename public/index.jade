@@ -24,9 +24,6 @@ html
             li
               a(href='/log.html')
                 b Log history
-    br
-    br
-    br
     .container
       button.btn.btn-link.btn-lg(button id="toggle") + New document
       hidden
@@ -80,18 +77,18 @@ html
                     td(width='100px')
                       .radio
                         label
-                          input#optionsRadios1(type='radio', name='type', ng-model="formtype", value='json', checked="checked" )
+                          input#r1(type='radio', name='type', ng-model="formtype", value='json', checked="checked", onclick='IsJsonString()')
                           | JSON
                     td(width='100px')
                       .radio
                         label
-                          input#optionsRadios2(type='radio', name='type', ng-model="formtype", value='xml')
+                          input#r2(type='radio', name='type', ng-model="formtype", value='xml', onclick='IsJsonString()')
                           | XML
             // TEXTAREA
             .form-group(text='', ng-controller='MainCtrl')
               label.col-sm-2.control-label Content
               .result.col-sm-8
-                textarea.col-xs-6.jsonFormatter(name='response', ng-model='textarea') 
+                textarea.col-xs-6.jsonFormatter(id="json" onkeyup="IsJsonString()" onkeydown="IsJsonString()" name='response', ng-model='textarea') 
                 div(ng-show="formtype=='json'")
                   .col-xs-6.jsonFormatter
                     json-formatter(json='textareaJson', open='1')
@@ -99,8 +96,10 @@ html
             .form-group
               .col-sm-8.col-sm-offset-2
                 button.btn.btn-default(type='reset') Clear
-                button.btn.btn-primary(type='submit') Submit
-
+                span 
+                button.btn.btn-primary.disabled(id='submit' type='submit' disabled) Submit
+                p
+                  span(id="status")
       div#App2(ng-app='myApp', ng-controller='MainController')
         table(table-layout='fixed')
           tr
@@ -115,7 +114,7 @@ html
               th METHOD
               th URL
               th
-                center JSON
+                center Response
               th
               th
           tbody
@@ -165,4 +164,35 @@ html
     script.
       function preview(str){
       alert(str)
-      }   
+      }
+    script.
+      function IsJsonString(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+      }
+    script.
+      function IsJsonString() {
+        if(document.getElementById('r1').checked){
+          try {
+            JSON.parse(document.getElementById("json").value);
+          } catch (e) {
+            document.getElementById('status').innerHTML = "Wrong JSON syntax."
+            document.getElementById('submit').className = "btn btn-primary disabled"
+            document.getElementById('submit').disabled = true
+
+            return;
+          }
+          document.getElementById('status').innerHTML = ""
+          document.getElementById('submit').className = "btn btn-primary"
+          document.getElementById('submit').disabled = false
+        }
+        else
+          document.getElementById('status').innerHTML = ""
+          document.getElementById('submit').className = "btn btn-primary"
+          document.getElementById('submit').disabled = false
+
+      }

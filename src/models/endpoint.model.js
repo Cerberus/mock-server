@@ -11,7 +11,7 @@ let EndpointSchema = new Schema({
   },
   method: {
     type: String,
-    requried: true
+    required: true
   },
   url: {
     type: String,
@@ -25,7 +25,11 @@ let EndpointSchema = new Schema({
   response: {
     type: String,
     required: true
-  }
+  },
+  list: [{
+  type: Schema.Types.ObjectId,
+  ref: 'groups' // <= model named to reference.
+  }]
 });
 
 module.exports = mongoose.model('Endpoint', EndpointSchema);

@@ -11,9 +11,6 @@ let Group = new Schema({
   },
   description: {
     type: String
-  },
-  list: {
-    type: Array
   }
 });
 

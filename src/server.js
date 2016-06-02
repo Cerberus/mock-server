@@ -67,13 +67,14 @@ app.get('/edit', (req, res) => { //route to edit file
     if (err) return err;
 
     if (result) {
-      // console.log('result.type : ' + result.type);
+
       let response = '';
-      if(req.body.type === 'json')
+      if(result.type === 'json')
         response = JSON.stringify(JSON.parse(result.response),null, '\t');
       else
         response = result.response
       return res.render('update',{
+              _id     : result._id,
               name   : result.name,
               method : result.method,
               url    : result.url,
@@ -107,6 +108,9 @@ app.post('/', (req, res) => { //route to add document
     return res.send('Detect wrong JSON format. Back to edit JSON')
   if(req.body.url.charAt(0)!='/')
     req.body.url = '/' + req.body.url
+  req.body.list = []
+  req.body.list.push("574e86119004f44f542fa8a4")
+
   Model
   .findOne({url: req.body.url, method: req.body.method}
   ,function (err, result) {
@@ -128,6 +132,7 @@ app.post('/', (req, res) => { //route to add document
 
 app.post('/update', (req, res) => { //route to update document
 
+  console.log(`_id : `, req.body._id);
   if(req.body.type==='json'&&!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
   if(req.body.type === 'json')
@@ -135,20 +140,15 @@ app.post('/update', (req, res) => { //route to update document
   if(req.body.url.charAt(0)!='/')
     req.body.url = '/' + req.body.url
   Model
-  .findOneAndUpdate({name:req.body.name}
+  .findOneAndUpdate({_id:req.body._id}
   ,req.body,
   function (err, result){
     if (result)
       return res.redirect('/')
-    return res.send('Fail to update.')
+    return res.send('Error to update, Duplicate name.')
     });
   })
-
-// TODO: match with regex
-//app.get('/service/mobile/:mobileNo')
-// match /service/mobile/12345
-// match /service/mobile/55555
-// match /service/mobile/:mobileNo
+// -------------log-------------
 app.get('/log', function (req, res, next) {
     Log.find({}).exec(function (err, results) {
       if (err) {
@@ -158,7 +158,7 @@ app.get('/log', function (req, res, next) {
       }
     })
   });
-
+// -------------reponse-------------
 app.get('*', (req, res) => {
   const path = req.path;
   var logData = { methods : 'GET',path : req.path, IP : req.headers.host }
@@ -270,8 +270,6 @@ app.delete('*', (req, res) => {
     }
   });
 });
-
-
 
 app.listen(APP_PORT, function () {
   console.log(`App listening on port ${APP_PORT}!`);
