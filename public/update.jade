@@ -77,12 +77,12 @@ html
                   td(width='100px')
                     .radio
                       label
-                        input#r1(type='radio', name='type', value='json', checked=(type=='json'), onclick='IsJsonString()')
+                        input#r1(type='radio', name='type', value='json', checked=(type=='json'), onclick='IsJsonString()&show()')
                         | JSON
                   td(width='100px')
                     .radio
                       label
-                        input#r2(type='radio', name='type', value='xml', checked=(type=='xml'), onclick='IsJsonString()')
+                        input#r2(type='radio', name='type', value='xml', checked=(type=='xml'), onclick='IsJsonString()&hide()')
                         | XML
           // TEXTAREA
           .form-group(text='#{json}', ng-controller='MainCtrl')
@@ -90,7 +90,7 @@ html
               .result.col-sm-8
                 textarea.col-xs-6.jsonFormatter(id="json" onkeyup="IsJsonString()" onkeydown="IsJsonString()" name='response', ng-model='textarea') 
                 //- div(ng-show="formtype=='json'")
-                .col-xs-6.jsonFormatter
+                .col-xs-6.jsonFormatter(id="jsonFormatter")
                   json-formatter(json='textareaJson', open='1')
           // SUBMIT
           .form-group
@@ -137,5 +137,11 @@ html
           document.getElementById('status').innerHTML = ""
           document.getElementById('submit').className = "btn btn-primary"
           document.getElementById('submit').disabled = false
-
       }
+      function hide(){
+        document.getElementById('jsonFormatter').className = 'hidden'
+      }
+      function show(){
+        document.getElementById('jsonFormatter').className = ''
+      }
+

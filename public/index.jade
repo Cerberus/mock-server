@@ -77,7 +77,7 @@ html
                     td(width='100px')
                       .radio
                         label
-                          input#r1(type='radio', name='type', ng-model="formtype", value='json', checked="checked", onclick='IsJsonString()')
+                          input#r1(type='radio', name='type', ng-model="formtype", value='json', onclick='IsJsonString()')
                           | JSON
                     td(width='100px')
                       .radio
@@ -190,9 +190,8 @@ html
           document.getElementById('submit').className = "btn btn-primary"
           document.getElementById('submit').disabled = false
         }
-        else
+        else if(document.getElementById('r2').checked)
           document.getElementById('status').innerHTML = ""
           document.getElementById('submit').className = "btn btn-primary"
           document.getElementById('submit').disabled = false
-
       }
