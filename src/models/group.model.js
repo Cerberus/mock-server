@@ -11,7 +11,12 @@ let Group = new Schema({
   },
   description: {
     type: String
-  }
+  },
+  list: [{	
+		type: Schema.ObjectId,
+		ref: 'Endpoint',
+		default: []
+  }]
 });
 
 module.exports = mongoose.model('Group', Group);

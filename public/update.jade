@@ -13,18 +13,19 @@ html
         .navbar-header
           button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-2')
             span.sr-only Toggle navigation
-          .navbar-brand Nextzy
+          .navbar-brand
+            img(style="max-width:100px; margin-top: -1px;" src="assets/nextzy_white_logo.png")
         #bs-example-navbar-collapse-2.collapse.navbar-collapse
           ul.nav.navbar-nav
-            li
+            li.active
               a(href='/')
                 b Main page
             li
+              a(href='/groupList')
+                b Service Group
+            li
               a(href='/log.html')
                 b Log history
-    br
-    br
-    br
     .container
       form.form-horizontal(name='form', method='POST', action='/update')
         fieldset(ng-app='demo')

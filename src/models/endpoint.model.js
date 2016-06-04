@@ -25,11 +25,7 @@ let EndpointSchema = new Schema({
   response: {
     type: String,
     required: true
-  },
-  list: [{
-  type: Schema.Types.ObjectId,
-  ref: 'groups' // <= model named to reference.
-  }]
+  }
 });
 
 module.exports = mongoose.model('Endpoint', EndpointSchema);

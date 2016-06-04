@@ -10,6 +10,17 @@ const Model = require('./models/endpoint.model.js');
 const Group = require('./models/group.model.js');
 const Log = require('./models/log.model.js');
 
+var clonefn = function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)){ 
+          copy[attr] = obj[attr];
+        }
+    }
+    return copy;
+}
+
 var bodyParser = require('body-parser');
 
 var nullJson = {  name   : '',
@@ -28,10 +39,10 @@ var check = function IsJsonString(str) {
 
 
 // var main = require('../public/index')
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: true
 }))
-app.use(bodyParser.json())
 
 app.set('views','./public')
 app.set('view engine','jade')
@@ -42,8 +53,21 @@ app.get('/', (req, res) => { //route to list all
   res.render('index')
 })
 
-app.get('/data', function(req, res) {
+app.get('/groupList', (req, res) => { //route to list all
+  Group.find({}).populate('list').exec((err, groups) => {
+      groups.forEach(function (group){//pretty json for quick view
+        for(let list of group.list){
+          if(list.type === 'json')
+            list.response = JSON.stringify(JSON.parse(list.response),null, 2)
+        }
+      })
+      if(err)
+        return res.send('Error to show group list')
+      res.render('group',{groups})
+  })
+})
 
+app.get('/data', function(req, res) {
     Model.find({
     },
     function (err,models) {
@@ -57,10 +81,22 @@ app.get('/data', function(req, res) {
     })
 });
 
+app.post('/ServiceList', function(req, res) {
+    // console.log('req.body._id : ' + req.body._id);
+    Model.find({},
+    function (err,models) {
+      models.forEach(function (model){//pretty json for quick view
+        if(model.type === 'json')
+          model.response = JSON.stringify(JSON.parse(model.response),null, 2)
+      })
+      if(err)
+        return res.json({})
+      res.json(models)
+    })
+});
+
 app.get('/edit', (req, res) => { //route to edit file
 
-  // console.log('edit');
-  // console.log('url : ' + req.query.url + 'method : ' + req.query.method);
   Model
   .findOne({name:req.query.name})
   .exec((err, result) => {
@@ -119,7 +155,7 @@ app.post('/', (req, res) => { //route to add document
       var model = new Model(req.body);
       if(req.body.type === 'json')
         model.response = JSON.stringify(JSON.parse(req.body.response))
-      model.save(function (err, result) {
+      model.save(function (err) {
       if(err)
         return res.send('Error to add, Duplicate name.')
       return res.redirect('/')
@@ -132,7 +168,6 @@ app.post('/', (req, res) => { //route to add document
 
 app.post('/update', (req, res) => { //route to update document
 
-  console.log(`_id : `, req.body._id);
   if(req.body.type==='json'&&!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
   if(req.body.type === 'json')
@@ -147,7 +182,66 @@ app.post('/update', (req, res) => { //route to update document
       return res.redirect('/')
     return res.send('Error to update, Duplicate name.')
     });
-  })
+})
+
+app.post('/test', (req, res) => { //show group list
+  Group.findOneAndUpdate({_id:"57504c93dcfd00aa34c35310"},
+    { $set : { list : ["57504d0cfb0632b6348f20a9","57505c73c6718dfa34b4b3a9"]} },
+    function (err) {
+      if(err)
+        return res.send('fail')
+      res.send('success to update')
+    })
+})
+// groups.forEach(function (group){
+//   group.list.push("57504d0cfb0632b6348f20a9")
+// })
+
+app.get('/callGroup', (req, res) => { //call add-edit group page
+  Group
+  .findOne({_id:req.query._id})
+  .exec((err, result) => {
+    if (err) return err;
+    if (result) {
+      return res.render('updateGroup',{
+              _id     : result._id,
+              name   : result.name,
+              description : result.description,
+              list : result.list
+            });
+    } else {
+      return res.render('updateGroup',{name:""});
+    }
+  });
+})
+
+app.post('/modifyGroup', (req, res) => { //add-update group document
+ 
+  if(req.body._id=='undefined'){
+    var temp = {}
+    temp.name = req.body.name
+    temp.description = req.body.description
+
+    var group = new Group(temp)
+    group.save(function (err) {
+      if(err)
+        return res.send('Error to add group, Duplicate name.')
+      return res.redirect('/groupList')
+    })
+  }
+  else
+  {
+    Group
+    .findOneAndUpdate({_id:req.body._id}
+    ,req.body,
+    function (err, result){
+      if (result)
+        return res.redirect('/groupList')
+      return res.send('Error to update, Duplicate name.')
+      });
+  }
+})
+
 // -------------log-------------
 app.get('/log', function (req, res, next) {
     Log.find({}).exec(function (err, results) {
@@ -157,7 +251,7 @@ app.get('/log', function (req, res, next) {
         res.send(results)
       }
     })
-  });
+});
 // -------------reponse-------------
 app.get('*', (req, res) => {
   const path = req.path;

@@ -11,10 +11,24 @@ app.controller('MainController',function ($scope, $http) {
 	$http.get('/data').then(function(res){
         $scope.models = res.data;
   });
-  $scope.test = "scope"
 })
 
-app.controller('logContoller',function ($scope, $http,$interval) {
+app.controller('checkList',function ($scope, $http) {
+  // $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+  //,"_id="+document.getElementById('_id').value
+  var checkedList = document.getElementById('list').value
+  $http.post('/ServiceList').then(function(res){
+        $scope.models = res.data;
+        $scope.models.forEach(function(model){
+          if(checkedList.indexOf(model._id) > -1)
+            model.checked = true
+          else
+            model.checked = false
+        })
+  });
+})
+
+app.controller('logContoller',function ($scope, $http, $interval) {
 
   $scope.toTime = function (date) {
       return moment(date).format('MMMM Do YYYY, h:mm:ss a')

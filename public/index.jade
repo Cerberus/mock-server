@@ -15,17 +15,25 @@ html
         .navbar-header
           button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-2')
             span.sr-only Toggle navigation
-          .navbar-brand Nextzy
+          .navbar-brand
+            img(style="max-width:100px; margin-top: -1px;" src="assets/nextzy_white_logo.png")
         #bs-example-navbar-collapse-2.collapse.navbar-collapse
           ul.nav.navbar-nav
             li.active
               a(href='/')
                 b Main page
             li
+              a(href='/groupList')
+                b Service Group
+            li
               a(href='/log.html')
                 b Log history
     .container
-      button.btn.btn-link.btn-lg(button id="toggle") + New document
+      h5(style="float:left;")
+          b Service list
+      div(style="float:right;")
+        button.btn.btn-primary(button id="toggle")
+          b ✚ New service
       hidden
         form.form-horizontal(name='form', method='POST',action='/')
           fieldset(ng-app='demo')
@@ -100,12 +108,11 @@ html
                 button.btn.btn-primary.disabled(id='submit' type='submit' disabled) Submit
                 p
                   span(id="status")
+      br
+      br
       div#App2(ng-app='myApp', ng-controller='MainController')
-        table(table-layout='fixed')
-          tr
-            td Search :
-            td(width='200px')
-              input(class="form-control",type='text',ng-model='name')
+        .well
+          input(id="inputNormal" placeholder="Search for any.." class="form-control",type='text',ng-model='name')
         table.table.table-striped.table-hover(class="with-ellipsis",style="width:100%")
           thead
             tr
@@ -151,7 +158,7 @@ html
       $('[data-toggle="tooltip"]').tooltip();   
       });
     //- script(type='text/javascript',src='lib/angular/angular.min.js')
-    script(type='text/javascript',src='lib/angular-ui-router/release/angular-ui-router.min.js')
+    //- script(type='text/javascript',src='lib/angular-ui-router/release/angular-ui-router.min.js')
     //- script(type='text/javascript',src='js/ui-bootstrap-tpls.min.js')
     script(type='text/javascript',src='lib/app.js')
 
@@ -164,15 +171,6 @@ html
     script.
       function preview(str){
       alert(str)
-      }
-    script.
-      function IsJsonString(str) {
-        try {
-            JSON.parse(str);
-        } catch (e) {
-            return false;
-        }
-        return true;
       }
     script.
       function IsJsonString() {
@@ -195,3 +193,7 @@ html
           document.getElementById('submit').className = "btn btn-primary"
           document.getElementById('submit').disabled = false
       }
+    script.
+      $('.form-control').on('focus blur', function (e) {
+      $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+      }).trigger('blur');

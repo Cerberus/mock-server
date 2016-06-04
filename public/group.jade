@@ -1,0 +1,85 @@
+html
+  head
+    style
+      include css/bootstrap.css
+      include css/td.css
+      include css/panel.css
+    link(rel='stylesheet', href='dist/json-formatter.min.css')
+    meta(charset='UTF-8')
+    title Group page
+  body
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-2')
+            span.sr-only Toggle navigation
+          .navbar-brand
+            img(style="max-width:100px; margin-top: -1px;" src="assets/nextzy_white_logo.png")
+        #bs-example-navbar-collapse-2.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a(href='/')
+                b Main page
+            li.active
+              a(href='/groupList')
+                b Service Group
+            li
+              a(href='/log.html')
+                b Log history
+    .container
+      h5(style="float:left;")
+        b Service Group
+      div(style="float:right;")
+        a.btn.btn-primary(href="/callGroup")
+          b ✚ New Group
+      br
+      br
+      each val,index in groups
+        if(index%3==0)
+          .row
+            .panel-group
+        .col-xs-4
+          .panel
+            .btn-group(style="float:right; margin-top: 10px; margin-right: 10px;")
+              a.btn.btn-link.btn-sm.dropdown-toggle(data-toggle='dropdown')
+                | ▾
+              ul.dropdown-menu.dropdown-menu-right
+                li
+                  a(href='/callGroup?_id=#{val._id}') Edit
+                li
+                  a(href='http://www.google.co.th') Delete
+            .panel-heading(data-toggle='collapse', href='#'+val._id)
+              .panel-title
+                span #{val.name} 
+                  span.badge
+                    b #{val.list.length}
+            
+            .panel-collapse.collapse(id = val._id)
+              table.table.table-striped.table-hover(class="with-ellipsis",style="width:100%")
+                thead
+                  tr
+                    th Name
+                    th METHOD
+                    th URL
+                    th
+                tbody
+                  each endp in val.list
+                    tr
+                      td #{endp.name}
+                      td #{endp.method}
+                      td #{endp.url}
+                      td
+                        div(title="#{endp.response}" )
+                          button(value = '#{endp.response}',type='button' class='btn btn-link btn-sm' onclick="preview(value)") 🔎
+    script(src='js/jquery.min.js')
+    script(src='js/bootstrap.js')
+    script.
+      function preview(str){
+      alert(str)
+      }
+
+
+
+
+
+
