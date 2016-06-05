@@ -138,7 +138,7 @@ html
                 a(ng-href="/edit?name={{model.name}}")
                   b [ Edit ]
               td(width='75px')
-                a(ng-href="/delete?name={{model.name}}",onclick="return confirm('Are you sure to delete this item?');")
+                a(ng-href="/delete?_id={{model._id}}",onclick="return confirm('Are you sure to delete this service?');")
                   font(color = 'red')
                     b [ Delete ]   
     

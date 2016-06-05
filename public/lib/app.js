@@ -34,7 +34,6 @@ app.controller('checkList',function ($scope, $http) {
         $scope.list.push(endp)
       })
     }
-    console.log($scope.list);
 
     $scope.includeId = function(id) {
     var i = $.inArray(id, $scope.list);
@@ -43,7 +42,6 @@ app.controller('checkList',function ($scope, $http) {
       } else {
           $scope.list.push(id);
       }
-      console.log($scope.list);
     }
 })
 

@@ -47,7 +47,7 @@ html
                 li
                   a(href='/callGroup?_id=#{val._id}') Edit
                 li
-                  a(href='http://www.google.co.th') Delete
+                  a(href='/deleteGroup?_id=#{val._id}',onclick="return confirm('Are you sure to delete this group?');") Delete
             .panel-heading(data-toggle='collapse', href='#'+val._id)
               .panel-title
                 span #{val.name} 
@@ -65,8 +65,8 @@ html
                 tbody
                   each endp in val.list
                     tr
-                      td #{endp.name}
-                      td #{endp.method}
+                      td(width='1px') #{endp.name}
+                      td(width='1px') #{endp.method}
                       td #{endp.url}
                       td
                         div(title="#{endp.response}" )

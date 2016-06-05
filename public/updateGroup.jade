@@ -33,7 +33,7 @@ html
           // NAME
           .form-group
             label.col-sm-2.control-label Group Name
-            .col-sm-8
+            .col-sm-9
               input.form-control(name='name', type='text', value='#{name}')
               input.form-control(readonly id='_id', name='_id', type='hidden', value='#{_id}')
               input.form-control(readonly id='list', ng-model='list', name='list', value='#{list}', type='hidden')
@@ -41,16 +41,16 @@ html
           // TEXTAREA
           .form-group
               label.col-sm-2.control-label Description
-              .result.col-sm-8
+              .result.col-sm-9
                 textarea.col-xs-6(class="form-control" id="json" name='description')
                   | #{description}
           // SUBMIT
           .form-group
-            .col-sm-8.col-sm-offset-2
+            .col-sm-9.col-sm-offset-2
               a.btn.btn-default(href='/groupList') Back
               span 
               button.btn.btn-primary(type='submit' onclick='test()') Submit
-          div
+          div.col-sm-10.col-sm-offset-1
             .well
               input(id="inputNormal" placeholder="Search for any.." class="form-control",type='text',ng-model='name')
             table.table.table-striped.table-hover(class="with-ellipsis",style="width:100%")
@@ -66,7 +66,7 @@ html
               tbody
                 tr(ng-repeat="model in models | filter : name")
                   td(width='1px')
-                    input(type="checkbox" ng-model="model.checked" ng-checked="model.checked" ng-click="includeId(model._id)")
+                    input(type="checkbox" ng-model="model.checked" ng-checked="model.checked" ng-click="includeId(model._id)" style="margin-top : 8px")
                   td(width='3%') {{$index+1}}
                   td(width='15%') {{model.name}}
                   td(width='7%') {{model.method}}
