@@ -26,10 +26,17 @@ html
               a(href='/log.html')
                 b Log history
     .container#App2(ng-app='myApp', ng-controller='checkList')
+      if _id
+        h5
+          b Service Group / 
+          b(style="color:#67cbb4;") Edit Group
+      else
+        h5
+          b Service Group / 
+          b(style="color:#67cbb4;") New Group
+      br
       form.form-horizontal(name='form', method='POST', action='/modifyGroup')
         fieldset
-          center
-            legend Group form
           // NAME
           .form-group
             label.col-sm-2.control-label Group Name

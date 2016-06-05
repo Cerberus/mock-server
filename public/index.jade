@@ -124,6 +124,7 @@ html
                 center Response
               th
               th
+              th
           tbody
             tr(ng-repeat="model in models | filter : name")
               td(width='3%') {{$index+1}}
@@ -131,17 +132,17 @@ html
               td(width='7%') {{model.method}}
               td(width='15%') {{model.url}}
               td(width='400px')
-                div(title="{{model.response}}" )
-                  button(value = '{{model.response}}',type='button' class='btn btn-link btn-sm' onclick="preview(value)") 🔎
-                  | {{model.response}}
-              td(width='50px')
+                | {{model.response}}
+              td(width='1px')
+                button.btn.btn-link.btn-xs(value = '{{model.response}}' onclick="preview(value)" onmouseover="" style="cursor: pointer;")
+                  img(style="margin-top: 2px;" src="assets/ic_visibility_grey_24dp_1x.png")
+              td(width='1px')
                 a(ng-href="/edit?name={{model.name}}")
-                  b [ Edit ]
-              td(width='75px')
+                  img(style="margin-top: 4px;" src="assets/ic_edit_grey_24dp_1x.png")
+              td(width='1px')
                 a(ng-href="/delete?_id={{model._id}}",onclick="return confirm('Are you sure to delete this service?');")
-                  font(color = 'red')
-                    b [ Delete ]   
-    
+                  img(style="margin-top: 3px;" src="assets/ic_delete_grey_24dp_1x.png")
+
     script(src='js/jquery.min.js')
     //- script(src='bower_components/angular/angular.js')
     script(src='bower_components/angular-sanitize/angular-sanitize.js')

@@ -45,12 +45,16 @@ html
                 | ▾
               ul.dropdown-menu.dropdown-menu-right
                 li
-                  a(href='/callGroup?_id=#{val._id}') Edit
+                  a(href='/callGroup?_id=#{val._id}')
+                    img(style="margin-top: -5px;" src="assets/ic_edit_grey_24dp_1x.png")
+                    strong Edit
                 li
-                  a(href='/deleteGroup?_id=#{val._id}',onclick="return confirm('Are you sure to delete this group?');") Delete
+                  a(href='/deleteGroup?_id=#{val._id}',onclick="return confirm('Are you sure to delete this group?');")
+                    img(style="margin-top: -5px;" src="assets/ic_delete_grey_24dp_1x.png")
+                    strong Delete
             .panel-heading(data-toggle='collapse', href='#'+val._id)
               .panel-title
-                span #{val.name} 
+                strong #{val.name} 
                   span.badge
                     b #{val.list.length}
             
@@ -58,14 +62,20 @@ html
               table.table.table-striped.table-hover(class="with-ellipsis",style="width:100%")
                 thead
                   tr
-                    th Name
-                    th METHOD
-                    th URL
+                    th 
+                      h6 
+                        b Name
+                    th 
+                      h6 
+                        b METHOD
+                    th 
+                      h6 
+                        b URL
                     th
                 tbody
                   each endp in val.list
                     tr
-                      td(width='1px') #{endp.name}
+                      td(width='100px') #{endp.name}
                       td(width='1px') #{endp.method}
                       td #{endp.url}
                       td
