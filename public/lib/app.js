@@ -25,7 +25,26 @@ app.controller('checkList',function ($scope, $http) {
           else
             model.checked = false
         })
-  });
+    })
+
+    $scope.list = []
+    if(document.getElementById('list').value){
+      var ids = document.getElementById('list').value.split(',')
+      ids.forEach(function (endp) {
+        $scope.list.push(endp)
+      })
+    }
+    console.log($scope.list);
+
+    $scope.includeId = function(id) {
+    var i = $.inArray(id, $scope.list);
+      if (i > -1) {
+          $scope.list.splice(i, 1);
+      } else {
+          $scope.list.push(id);
+      }
+      console.log($scope.list);
+    }
 })
 
 app.controller('logContoller',function ($scope, $http, $interval) {

@@ -25,18 +25,19 @@ html
             li
               a(href='/log.html')
                 b Log history
-    .container
+    .container#App2(ng-app='myApp', ng-controller='checkList')
       form.form-horizontal(name='form', method='POST', action='/modifyGroup')
         fieldset
           center
             legend Group form
           // NAME
           .form-group
-            label.col-sm-2.control-label Name
+            label.col-sm-2.control-label Group Name
             .col-sm-8
               input.form-control(name='name', type='text', value='#{name}')
               input.form-control(readonly id='_id', name='_id', type='hidden', value='#{_id}')
-              input.form-control(readonly id='list', name='list', type='hidden', value='#{list}')
+              input.form-control(readonly id='list', ng-model='list', name='list', value='#{list}', type='hidden')
+              //- input.form-control(id='list', name='list' ng-model='idList' ng-hide='false')
           // TEXTAREA
           .form-group
               label.col-sm-2.control-label Description
@@ -48,42 +49,37 @@ html
             .col-sm-8.col-sm-offset-2
               a.btn.btn-default(href='/groupList') Back
               span 
-              button.btn.btn-primary(type='submit') Submit
-      div#App2(ng-app='myApp', ng-controller='checkList')
-        .well
-          input(id="inputNormal" placeholder="Search for any.." class="form-control",type='text',ng-model='name')
-        table.table.table-striped.table-hover(class="with-ellipsis",style="width:100%")
-          thead
-            tr
-              th
-              th #
-              th Name
-              th METHOD
-              th URL
-              th
-                center Response
-              th
-              th
-          tbody
-            tr(ng-repeat="model in models | filter : name")
-              td(width='1px')
-                input(type="checkbox" ng-model="model.checked" ng-checked="model.checked")
-              td(width='3%') {{$index+1}}
-              td(width='12%') {{model.name}}
-              td(width='7%') {{model.method}}
-              td(width='15%') {{model.url}}
-              td(width='400px')
-                div(title="{{model.response}}")
-                  button(value = '{{model.response}}',type='button' class='btn btn-link btn-sm' onclick="preview(value)") 🔎
-                  | {{model.response}}
-              td(width='50px')
-                a(ng-href="/edit?name={{model.name}}")
-                  b [ Edit ]
-              td(width='75px')
-                a(ng-href="/delete?name={{model.name}}",onclick="return confirm('Are you sure to delete this item?');")
-                  font(color = 'red')
-                    b [ Delete ]
+              button.btn.btn-primary(type='submit' onclick='test()') Submit
+          div
+            .well
+              input(id="inputNormal" placeholder="Search for any.." class="form-control",type='text',ng-model='name')
+            table.table.table-striped.table-hover(class="with-ellipsis",style="width:100%")
+              thead
+                tr
+                  th
+                  th #
+                  th Name
+                  th METHOD
+                  th URL
+                  th
+                    center Response
+              tbody
+                tr(ng-repeat="model in models | filter : name")
+                  td(width='1px')
+                    input(type="checkbox" ng-model="model.checked" ng-checked="model.checked" ng-click="includeId(model._id)")
+                  td(width='3%') {{$index+1}}
+                  td(width='15%') {{model.name}}
+                  td(width='7%') {{model.method}}
+                  td(width='15%') {{model.url}}
+                  td
+                    div(title="{{model.response}}")
+                      button(value = '{{model.response}}',type='button' class='btn btn-link btn-sm' onclick="preview(value)") 🔎
+                      | {{model.response}}
     script(src='js/jquery.min.js')
     //- script(type='text/javascript',src='lib/angular-ui-router/release/angular-ui-router.min.js')
     //- script(type='text/javascript',src='js/ui-bootstrap-tpls.min.js')
     script(type='text/javascript',src='lib/app.js')
+    script.
+      function test(){
+        document.getElementById('list').value = angular.element(document.querySelector('[ng-controller="checkList"]')).scope().list
+      }

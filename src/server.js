@@ -210,34 +210,40 @@ app.get('/callGroup', (req, res) => { //call add-edit group page
               list : result.list
             });
     } else {
-      return res.render('updateGroup',{name:""});
+      return res.render('updateGroup',{name:"",list:""});
     }
   });
 })
 
 app.post('/modifyGroup', (req, res) => { //add-update group document
- 
-  if(req.body._id=='undefined'){
+  
+  var temp = req.body.list.split(',')
+  req.body.list = []
+  if(temp!=""){ //not null
+    if(temp.length)
+      temp.forEach(function (id){
+        req.body.list.push(id)
+      })
+  }
+  if(req.body._id=='undefined'){//new group
     var temp = {}
     temp.name = req.body.name
     temp.description = req.body.description
-
+    temp.list = req.body.list
     var group = new Group(temp)
     group.save(function (err) {
       if(err)
-        return res.send('Error to add group, Duplicate name.')
+        return res.send('Error to add group, may duplicate name.')
       return res.redirect('/groupList')
     })
-  }
-  else
-  {
+  } else {//edit group
     Group
     .findOneAndUpdate({_id:req.body._id}
     ,req.body,
     function (err, result){
       if (result)
         return res.redirect('/groupList')
-      return res.send('Error to update, Duplicate name.')
+      return res.send('Error to update, may Duplicate name.')
       });
   }
 })
