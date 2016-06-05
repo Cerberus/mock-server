@@ -4,6 +4,8 @@ html
       include css/bootstrap.css
       include css/td.css
       include css/panel.css
+      include bower_components/sweetalert2/dist/sweetalert2.min.css
+    script(src="bower_components/sweetalert2/dist/sweetalert2.min.js")
     link(rel='stylesheet', href='dist/json-formatter.min.css')
     meta(charset='UTF-8')
     title Group page
@@ -80,12 +82,23 @@ html
                       td #{endp.url}
                       td
                         div(title="#{endp.response}" )
-                          button(value = '#{endp.response}',type='button' class='btn btn-link btn-sm' onclick="preview(value)") 🔎
+                          button.btn.btn-link.btn-xs(value='#{endp}' onclick="preview(value)" onmouseover="" style="cursor: pointer;")
+                            img(style="margin-top: 2px;" src="assets/ic_visibility_grey_24dp_1x.png")
     script(src='js/jquery.min.js')
     script(src='js/bootstrap.js')
     script.
-      function preview(str){
+      function preview(model){
       alert(str)
+      //- console.log(model.response)
+      //- console.log(model)
+      //- model = JSON.stringify(JSON.parse(model))
+
+      //- model.response = model.response.replace(new RegExp("\n", "g"), '<br/>')
+      //- swal({
+      //-   title: model.name,
+      //-   html: '<b>method : </b>' + model.method + '<br/><b>url : </b>' + model.url + '<div style="text-align:left;">' + model.response + '</div>',
+      //-   confirmButtonText: 'Cool'
+      //- })
       }
 
 

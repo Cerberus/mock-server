@@ -4,6 +4,8 @@ html
       include css/bootstrap.css
       include css/td.css
       include dist/json-formatter.min.css
+      include bower_components/sweetalert2/dist/sweetalert2.min.css
+    script(src="bower_components/sweetalert2/dist/sweetalert2.min.js")
     script(type='text/javascript',src='lib/angular/angular.min.js')
     script(src='bower_components/angular-sanitize/angular-sanitize.js')
     link(rel='stylesheet', href='dist/json-formatter.min.css')
@@ -134,18 +136,17 @@ html
               td(width='400px')
                 | {{model.response}}
               td(width='1px')
-                button.btn.btn-link.btn-xs(value = '{{model.response}}' onclick="preview(value)" onmouseover="" style="cursor: pointer;")
+                button.btn.btn-link.btn-xs(value='{{model}}' onclick="preview(value)" onmouseover="" style="cursor: pointer;")
                   img(style="margin-top: 2px;" src="assets/ic_visibility_grey_24dp_1x.png")
               td(width='1px')
                 a(ng-href="/edit?name={{model.name}}")
                   img(style="margin-top: 4px;" src="assets/ic_edit_grey_24dp_1x.png")
               td(width='1px')
                 a(ng-href="/delete?_id={{model._id}}",onclick="return confirm('Are you sure to delete this service?');")
-                  img(style="margin-top: 3px;" src="assets/ic_delete_grey_24dp_1x.png")
+                  img(style="margin-top: 3px;" src="assets/ic_delete_grey_24dp_1x_mid.png")
 
     script(src='js/jquery.min.js')
     //- script(src='bower_components/angular/angular.js')
-    script(src='bower_components/angular-sanitize/angular-sanitize.js')
     script(src='js/bootstrap.js')
     script(type="text/javascript").
       $(document).ready(function(){
@@ -170,8 +171,32 @@ html
       height:300px;
       }
     script.
-      function preview(str){
-      alert(str)
+      function preview(model){
+      //- alert(str)
+      model = JSON.parse(model)
+      model.response = model.response.replace(new RegExp("\n", "g"), '<br/>')
+      swal({
+        title: model.name,
+        html: '<b>method : </b>' + model.method + '<br/><b>url : </b>' + model.url + '<div style="text-align:left;">' + model.response + '</div>',
+        confirmButtonText: 'Cool',
+        confirmButtonColor: '#67cbb4'
+      })
+      }
+      function deleteService(){
+      return swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function(isConfirm) {
+        if (isConfirm) {
+          return true
+        }else{
+          return false
+        }
+      })
       }
     script.
       function IsJsonString() {
