@@ -4,7 +4,6 @@ var express = require('express');
 var app = express();
 
 const db = require('./db')() // invoke db.
-var ObjectId = require('mongoose').Types.ObjectId();
 const { APP_PORT } = require('./config');
 const Model = require('./models/endpoint.model.js');
 const Group = require('./models/group.model.js');
@@ -107,7 +106,7 @@ app.get('/data', function(req, res) {
           Group.find({list:model._id},{name:true,_id:false}).lean().exec(function (err, belongGroup) {
             if(err)
               console.log('error to find group belong this model');
-            model.belongGroup = []
+            model.belongGroup = [""]
             belongGroup.forEach(function(group) {
               model.belongGroup.push(group.name)
             })
@@ -115,7 +114,7 @@ app.get('/data', function(req, res) {
           })
         });
       }).then(function() {
-        setTimeout(function(){res.json(models)},100);
+        setTimeout(function(){res.json(models)},120);
       })
       // ,function(){
       //     console.log('final models', + models);
@@ -132,6 +131,24 @@ app.get('/allGroup', function(req, res){
       //   group.on = false
       // })
       return res.json(groups)
+    })
+})
+
+app.get('/checkBoxGroup', function(req, res){
+  var cbg = []
+    Group.find({},{description:false}).lean().exec(function(err, groups) {
+      groups.forEach(function(group) {
+        let tempGroup = {_id:group._id,name:group.name}
+        let tempList = group.list.map(function(item) {
+          return item.toString();
+        });
+        if(req.query._id && tempList.indexOf(req.query._id) > -1)
+          tempGroup.check = true
+        else
+          tempGroup.check = false
+        cbg.push(tempGroup)
+      })
+      return res.json(cbg)
     })
 })
 

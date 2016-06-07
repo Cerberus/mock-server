@@ -16,7 +16,6 @@ app.controller('MainController',function ($scope, $http) {
         $scope.groups.unshift(new Object({name:""}))
   });
   $scope.deleteService = function(_id, name, method, url){
-
     swal({
       title: 'Delete '+name+' service ?',
       text: "Method : " + method + ", URL : " + url,
