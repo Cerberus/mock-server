@@ -6,6 +6,8 @@ html
       include css/panel.css
       include bower_components/sweetalert2/dist/sweetalert2.min.css
     script(src="bower_components/sweetalert2/dist/sweetalert2.min.js")
+    script(type='text/javascript',src='lib/angular/angular.min.js')
+    script(src='bower_components/angular-sanitize/angular-sanitize.js')
     link(rel='stylesheet', href='dist/json-formatter.min.css')
     meta(charset='UTF-8')
     title Group page
@@ -28,7 +30,7 @@ html
             li
               a(href='/log.html')
                 b Log history
-    .container
+    .container#App2(ng-app='myApp', ng-controller='GroupController')
       h5(style="float:left;")
         b Service Group
       div(style="float:right;")
@@ -82,23 +84,27 @@ html
                       td #{endp.url}
                       td
                         div(title="#{endp.response}" )
-                          button.btn.btn-link.btn-xs(value='#{endp}' onclick="preview(value)" onmouseover="" style="cursor: pointer;")
+                          button.btn.btn-link.btn-xs(value='#{endp.response}' onclick="preview(value)" onmouseover="" style="cursor: pointer;")
                             img(style="margin-top: 2px;" src="assets/ic_visibility_grey_24dp_1x.png")
+                        //- a(onclick="preview(#{endp})")
+                        //- button.btn.btn-link.btn-xs(value='#{endp}' onclick="preview(value)" onmouseover="" style="cursor: pointer;")
+                        //-   img(style="margin-top: 2px;" src="assets/ic_visibility_grey_24dp_1x.png")
     script(src='js/jquery.min.js')
     script(src='js/bootstrap.js')
+    script(type='text/javascript',src='lib/app.js')
     script.
-      function preview(model){
-      alert(str)
-      //- console.log(model.response)
-      //- console.log(model)
-      //- model = JSON.stringify(JSON.parse(model))
+      
+      function preview(response){
 
-      //- model.response = model.response.replace(new RegExp("\n", "g"), '<br/>')
-      //- swal({
-      //-   title: model.name,
-      //-   html: '<b>method : </b>' + model.method + '<br/><b>url : </b>' + model.url + '<div style="text-align:left;">' + model.response + '</div>',
-      //-   confirmButtonText: 'Cool'
-      //- })
+      response = response.replace(new RegExp("<", "g"), '&lt;')
+      response = response.replace(new RegExp("\n", "g"), '<br/>')
+
+      swal({
+        title: 'Response',
+        html: '<div style="text-align:left;">' + response + '</div>',
+        confirmButtonText: 'Cool',
+        confirmButtonColor: '#67cbb4'
+      })
       }
 
 

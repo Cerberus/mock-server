@@ -114,8 +114,17 @@ html
       br
       div#App2(ng-app='myApp', ng-controller='MainController')
         .well
-          input(id="inputNormal" placeholder="Search for any.." class="form-control",type='text',ng-model='name')
-        table.table.table-striped.table-hover(class="with-ellipsis",style="width:100%")
+          .form-group
+            .col-sm-4
+              input(id="inputNormal" placeholder="Search for any.." class="form-control",type='text',ng-model='search.$')
+            h6.col-sm-1
+              b Group :
+            .col-sm-4
+              select.form-control(ng-model='search.belongGroup')
+                option(ng-repeat='group in groups') {{group.name}}
+          br
+        
+        table.table.table-striped.table-hover(style="width:100%")
           thead
             tr
               th #
@@ -128,7 +137,7 @@ html
               th
               th
           tbody
-            tr(ng-repeat="model in models | filter : name")
+            tr(ng-repeat="model in models | filter : search")
               td(width='3%') {{$index+1}}
               td(width='12%') {{model.name}}
               td(width='7%') {{model.method}}
@@ -142,7 +151,8 @@ html
                 a(ng-href="/edit?name={{model.name}}")
                   img(style="margin-top: 4px;" src="assets/ic_edit_grey_24dp_1x.png")
               td(width='1px')
-                a(ng-href="/delete?_id={{model._id}}",onclick="return confirm('Are you sure to delete this service?');")
+                //- a(ng-href="/delete?_id={{model._id}}",onclick="return confirm('Are you sure to delete this service?');")
+                a(tyle="cursor: pointer;" ng-click="deleteService(model._id,model.name,model.method,model.url)")
                   img(style="margin-top: 3px;" src="assets/ic_delete_grey_24dp_1x_mid.png")
 
     script(src='js/jquery.min.js')
@@ -174,28 +184,16 @@ html
       function preview(model){
       //- alert(str)
       model = JSON.parse(model)
-      model.response = model.response.replace(new RegExp("\n", "g"), '<br/>')
+      if(model.type=='json')
+        model.response = model.response.replace(new RegExp("\n", "g"), '<br/>')
+      else //model.type=='xml'
+        model.response = model.response.replace(new RegExp("<", "g"), '&lt;')
+      console.log('response : '+model.response)
       swal({
         title: model.name,
         html: '<b>method : </b>' + model.method + '<br/><b>url : </b>' + model.url + '<div style="text-align:left;">' + model.response + '</div>',
         confirmButtonText: 'Cool',
         confirmButtonColor: '#67cbb4'
-      })
-      }
-      function deleteService(){
-      return swal({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then(function(isConfirm) {
-        if (isConfirm) {
-          return true
-        }else{
-          return false
-        }
       })
       }
     script.

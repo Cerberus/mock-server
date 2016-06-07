@@ -79,9 +79,7 @@ html
                   td(width='7%') {{model.method}}
                   td(width='15%') {{model.url}}
                   td
-                    div(title="{{model.response}}")
-                      button(value = '{{model.response}}',type='button' class='btn btn-link btn-sm' onclick="preview(value)") 🔎
-                      | {{model.response}}
+                    | {{model.response}}
     script(src='js/jquery.min.js')
     //- script(type='text/javascript',src='lib/angular-ui-router/release/angular-ui-router.min.js')
     //- script(type='text/javascript',src='js/ui-bootstrap-tpls.min.js')

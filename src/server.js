@@ -9,16 +9,40 @@ const { APP_PORT } = require('./config');
 const Model = require('./models/endpoint.model.js');
 const Group = require('./models/group.model.js');
 const Log = require('./models/log.model.js');
+var Promise = require('bluebird');
 
 var clonefn = function clone(obj) {
+    var copy;
+
+    // Handle the 3 simple types, and null or undefined
     if (null == obj || "object" != typeof obj) return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)){ 
-          copy[attr] = obj[attr];
-        }
+
+    // Handle Date
+    if (obj instanceof Date) {
+        copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
     }
-    return copy;
+
+    // Handle Array
+    if (obj instanceof Array) {
+        copy = [];
+        for (var i = 0, len = obj.length; i < len; i++) {
+            copy[i] = clone(obj[i]);
+        }
+        return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+        copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+        }
+        return copy;
+    }
+
+    throw new Error("Unable to copy obj! Its type isn't supported.");
 }
 
 var bodyParser = require('body-parser');
@@ -67,19 +91,49 @@ app.get('/groupList', (req, res) => { //route to list all
   })
 })
 
+
 app.get('/data', function(req, res) {
+
     Model.find({
-    },
+    }).lean().exec(
     function (err,models) {
-      models.forEach(function (model){//pretty json for quick view
-        if(model.type === 'json')
-          model.response = JSON.stringify(JSON.parse(model.response),null, 2)
+      new Promise(function(resolve, reject){
+        resolve()
+      }).then(function () {
+        models.forEach(function (model){//pretty json for quick view
+          if(model.type === 'json')
+            model.response = JSON.stringify(JSON.parse(model.response),null, 2)
+
+          Group.find({list:model._id},{name:true,_id:false}).lean().exec(function (err, belongGroup) {
+            if(err)
+              console.log('error to find group belong this model');
+            model.belongGroup = []
+            belongGroup.forEach(function(group) {
+              model.belongGroup.push(group.name)
+            })
+              
+          })
+        });
+      }).then(function() {
+        setTimeout(function(){res.json(models)},100);
       })
-      if(err)
-        return res.json({})
-      res.json(models)
+      // ,function(){
+      //     console.log('final models', + models);
+      //     res.json(models)
+      //   }
+      // if(err)
+      //   return res.json({})
     })
 });
+
+app.get('/allGroup', function(req, res){
+    Group.find({},{name:true,_id:false}).lean().exec(function(err, groups) {
+      // groups.forEach(function(group) {
+      //   group.on = false
+      // })
+      return res.json(groups)
+    })
+})
 
 app.post('/ServiceList', function(req, res) {
     // console.log('req.body._id : ' + req.body._id);
@@ -110,7 +164,7 @@ app.get('/edit', (req, res) => { //route to edit file
       else
         response = result.response
       return res.render('update',{
-              _id     : result._id,
+              _id    : result._id,
               name   : result.name,
               method : result.method,
               url    : result.url,
@@ -141,21 +195,6 @@ app.get('/delete', (req, res) => { //route to delete document
       return res.send('Fail to delete.');
     }
   });      
-
-})
-
-app.delete('/test',(req, res) =>{
-
-      Group.update({},
-      { $pull : { list: "57544cf253e5d6d9ec87a32a"}},
-      {multi:true}).exec(function (groups){
-        Group.find({},
-         (err, results) => {
-            res.json(results)
-         } 
-        )
-      })
-      
 })
 
 app.post('/', (req, res) => { //route to add document

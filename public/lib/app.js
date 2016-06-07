@@ -11,6 +11,43 @@ app.controller('MainController',function ($scope, $http) {
 	$http.get('/data').then(function(res){
         $scope.models = res.data;
   });
+  $http.get('/allGroup').then(function(res){
+        $scope.groups = res.data;
+        $scope.groups.unshift(new Object({name:""}))
+  });
+  $scope.deleteService = function(_id, name, method, url){
+
+    swal({
+      title: 'Delete '+name+' service ?',
+      text: "Method : " + method + ", URL : " + url,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+        window.location.href = "/delete?_id=" + _id
+      }
+    })
+  }
+})
+
+app.controller('GroupController',function ($scope) {
+  $scope.deleteService = function(_id, name, method, url){
+
+    swal({
+      title: 'Delete '+name+' service ?',
+      text: "Method : " + method + ", URL : " + url,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+        window.location.href = "/delete?_id=" + _id
+      }
+    })
+  }
 })
 
 app.controller('checkList',function ($scope, $http) {
