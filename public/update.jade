@@ -36,7 +36,7 @@ html
             label.col-sm-2.control-label Name
             .col-sm-8
               input.form-control(name='name', type='text', value='#{name}')
-              input.form-control(readonly, name='_id', type='hidden', value='#{_id}')
+              input.form-control(id='id' readonly, name='_id', type='hidden', value='#{_id}')
           // METHOD
           .form-group
             label.col-sm-2.control-label METHOD
@@ -69,6 +69,14 @@ html
             label.col-sm-2.control-label URL
             .col-sm-8
               input.form-control(name='url', type='text', value='#{url}')
+          // GROUP
+          .form-group(ng-controller='GroupCtrl')
+            label.col-sm-2.control-label GROUP
+            .col-sm-9
+              input(id='group' type='hidden' name='group' value='')
+              label.checkbox-inline(ng-repeat='cb in cbg')
+                input(type='checkbox', ng-checked="{{cb.check}}" ng-click="toggleSelection(cb._id)")
+                |{{cb.name}}
           // TYPE
           .form-group
             label.col-sm-2.control-label TYPE

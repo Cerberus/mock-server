@@ -44,12 +44,12 @@ html
             // NAME
             .form-group
               label.col-sm-2.control-label Name
-              .col-sm-8
+              .col-sm-9
                 input.form-control(name='name', type='text', value='')
             // METHOD
             .form-group
               label.col-sm-2.control-label METHOD
-              .col-sm-8
+              .col-sm-9
                 table
                   tr
                     td(width='100px')
@@ -76,12 +76,20 @@ html
             // PATH
             .form-group
               label.col-sm-2.control-label URL
-              .col-sm-8
+              .col-sm-9
                 input.form-control(name='url', type='text', value='')
+            // GROUP
+            .form-group(ng-controller='GroupCtrl')
+              label.col-sm-2.control-label GROUP
+              .col-sm-9
+                input(id='group' type='hidden' name='group' value='')
+                label.checkbox-inline(ng-repeat='cb in cbg')
+                  input(type='checkbox', ng-checked="cb.check" ng-click="toggleSelection(cb._id)")
+                  |{{cb.name}}
             // TYPE
             .form-group
               label.col-sm-2.control-label TYPE
-              .col-sm-8
+              .col-sm-9
                 table
                   tr
                     td(width='100px')
@@ -97,14 +105,14 @@ html
             // TEXTAREA
             .form-group(text='', ng-controller='MainCtrl')
               label.col-sm-2.control-label Content
-              .result.col-sm-8
+              .result.col-sm-9
                 textarea.col-xs-6.jsonFormatter(id="json" onkeyup="IsJsonString()" onkeydown="IsJsonString()" name='response', ng-model='textarea') 
                 div(ng-show="formtype=='json'")
                   .col-xs-6.jsonFormatter
                     json-formatter(json='textareaJson', open='1')
             // SUBMIT
             .form-group
-              .col-sm-8.col-sm-offset-2
+              .col-sm-9.col-sm-offset-2
                 button.btn.btn-default(type='reset') Clear
                 span 
                 button.btn.btn-primary.disabled(id='submit' type='submit' disabled) Submit
@@ -160,7 +168,7 @@ html
     script(src='js/bootstrap.js')
     script(type="text/javascript").
       $(document).ready(function(){
-      $("hidden").hide();
+      $("hidden").show();
       });
       $("#toggle").click(function(){
       $("hidden").toggle();

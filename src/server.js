@@ -116,12 +116,6 @@ app.get('/data', function(req, res) {
       }).then(function() {
         setTimeout(function(){res.json(models)},120);
       })
-      // ,function(){
-      //     console.log('final models', + models);
-      //     res.json(models)
-      //   }
-      // if(err)
-      //   return res.json({})
     })
 });
 
@@ -196,7 +190,7 @@ app.get('/edit', (req, res) => { //route to edit file
 })
 
 app.get('/delete', (req, res) => { //route to delete document
-  console.log(req.query._id);
+
   Model
   .remove({_id:req.query._id}
   ,function (err, result){
@@ -215,12 +209,14 @@ app.get('/delete', (req, res) => { //route to delete document
 })
 
 app.post('/', (req, res) => { //route to add document
-
+  
   if(req.body.type==='json'&&!check(req.body.response))
     return res.send('Detect wrong JSON format. Back to edit JSON')
   if(req.body.url.charAt(0)!='/')
     req.body.url = '/' + req.body.url
-
+  // req.body.group.forEach(function(groudId){
+  //   console.log(groundId);
+  // })
   Model
   .findOne({url: req.body.url, method: req.body.method}
   ,function (err, result) {
@@ -229,9 +225,24 @@ app.post('/', (req, res) => { //route to add document
       var model = new Model(req.body);
       if(req.body.type === 'json')
         model.response = JSON.stringify(JSON.parse(req.body.response))
-      model.save(function (err) {
+      model.save(function (err, model) {
       if(err)
-        return res.send('Error to add, Duplicate name.')
+        return res.send('Error to add, Not complete info or Duplicate name.')
+      var checkList = req.body.group.split(',')
+      Group.find({},{_id:true}).exec(function(err, groups)
+      {
+        console.log('groups : ' + groups);
+        if(err)
+          return res.send('Complete to add, but error to add to group')
+        groups.forEach(function(group){
+          let id = group._id.toString()
+          if(checkList.indexOf(id) > -1){
+            Group.update({_id:id},{ $addToSet : { list: model._id}}).exec()
+          } else {
+            Group.update({_id:id},{ $pull : { list: model._id}}).exec()
+          }
+        })
+      })
       return res.redirect('/')
       })
     }
@@ -251,11 +262,26 @@ app.post('/update', (req, res) => { //route to update document
   Model
   .findOneAndUpdate({_id:req.body._id}
   ,req.body,
-  function (err, result){
-    if (result)
-      return res.redirect('/')
-    return res.send('Error to update, Duplicate name.')
-    });
+  function (err, model){
+    if (err)
+      return res.send('Error to update, Duplicate name.')
+    var checkList = req.body.group.split(',')
+    Group.find({},{_id:true}).exec(function(err, groups)
+    {
+      console.log('groups : ' + groups);
+      if(err)
+        return res.send('Complete to add, but error to add to group')
+      groups.forEach(function(group){
+        let id = group._id.toString()
+        if(checkList.indexOf(id) > -1){
+          Group.update({_id:id},{ $addToSet : { list: model._id}}).exec()
+        } else {
+          Group.update({_id:id},{ $pull : { list: model._id}}).exec()
+        }
+      })
+    })
+    return res.redirect('/')
+  });
 })
 
 // groups.forEach(function (group){
