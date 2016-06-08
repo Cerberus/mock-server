@@ -177,7 +177,7 @@ app.get('/edit', (req, res) => { //route to edit file
 
       let response = '';
       if(result.type === 'json')
-        response = JSON.stringify(JSON.parse(result.response),null, '\t');
+        response = JSON.stringify(JSON.parse(result.response),null, 2);
       else
         response = result.response
       return res.render('update',{
