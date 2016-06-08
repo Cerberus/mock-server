@@ -53,7 +53,7 @@ html
                     img(style="margin-top: -5px;" src="assets/ic_edit_grey_24dp_1x.png")
                     strong Edit
                 li
-                  a(href='/deleteGroup?_id=#{val._id}',onclick="return confirm('This action won't delete service(s), are you sure to delete this group?);")
+                  a(href='/deleteGroup?_id=#{val._id}',onclick="return confirm('Are you sure to delete this group? This action not delete services');")
                     img(style="margin-top: -5px;" src="assets/ic_delete_grey_24dp_1x.png")
                     strong Delete
             .panel-heading(data-toggle='collapse', href='#'+val._id)

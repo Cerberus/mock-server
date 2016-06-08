@@ -343,8 +343,6 @@ app.get('*', (req, res) => {
     obj.save(function (err, obj) {
       if (err) {
         res.status(500).send(err);
-      } else {
-        console.log(obj);
       }
     })
   Model
@@ -371,8 +369,6 @@ app.post('*', (req, res) => {
     obj.save(function (err, obj) {
       if (err) {
         res.status(500).send(err);
-      } else {
-        console.log(obj);
       }
     })
   Model
@@ -399,8 +395,6 @@ app.put('*', (req, res) => {
     obj.save(function (err, obj) {
       if (err) {
         res.status(500).send(err);
-      } else {
-        console.log(obj);
       }
     })
   Model
@@ -426,8 +420,6 @@ app.delete('*', (req, res) => {
     obj.save(function (err, obj) {
       if (err) {
         res.status(500).send(err);
-      } else {
-        console.log(obj);
       }
     })
   const path = req.path;

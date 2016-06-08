@@ -32,7 +32,6 @@
         <tr>
         <th><h5><b>PATH( / )</b></h5></th>
         <th><h5><b>Method</b></h5></th>
-          <th><h5><b>IP ADDRESS</b></h5></th>
           <th><h5><b>Access time</b></h5></th>
         </tr>
       </thead>
@@ -40,7 +39,6 @@
         <tr ng-repeat = "log in logs | orderBy:'time':true" >
           <td><h5>{{log.path}}</h5></td>
           <td><h5>{{log.methods}}</h5></td>
-          <td><h5>{{log.IP}}</h5></td>
           <td><h5>{{toTime(log.timestamp)}}</h5></td>
         </tr>
       </tbody>
