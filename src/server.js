@@ -231,7 +231,6 @@ app.post('/', (req, res) => { //route to add document
       var checkList = req.body.group.split(',')
       Group.find({},{_id:true}).exec(function(err, groups)
       {
-        console.log('groups : ' + groups);
         if(err)
           return res.send('Complete to add, but error to add to group')
         groups.forEach(function(group){
@@ -268,7 +267,6 @@ app.post('/update', (req, res) => { //route to update document
     var checkList = req.body.group.split(',')
     Group.find({},{_id:true}).exec(function(err, groups)
     {
-      console.log('groups : ' + groups);
       if(err)
         return res.send('Complete to add, but error to add to group')
       groups.forEach(function(group){

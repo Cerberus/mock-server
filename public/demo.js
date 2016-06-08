@@ -19,11 +19,9 @@ app.controller('GroupCtrl', function ($scope, $http) {
   $http.get('/checkBoxGroup?_id=' + id ).then(function(res){
         $scope.cbg = res.data;
 			  angular.forEach($scope.cbg,function(cb,index){
-			  	console.log('check : ' + cb.check);
 			  	if(cb.check===true)
 			  		$scope.selection.push(cb._id)
 			  })
-			  console.log('selection : ' + $scope.selection);
   });
   $scope.toggleSelection = function toggleSelection(_id) {
       var idx = $scope.selection.indexOf(_id);
