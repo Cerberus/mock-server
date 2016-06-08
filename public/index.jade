@@ -144,6 +144,7 @@ html
               th
               th
               th
+              th
           tbody
             tr(ng-repeat="model in models | filter : search")
               td(width='3%') {{$index+1}}
@@ -153,6 +154,9 @@ html
               td(width='400px')
                 | {{model.response}}
               td(width='1px')
+                a(style="cursor: pointer;" ng-click="copy(model.url)")
+                  img(style="margin-top: 3px;" src="assets/copy-path.png")
+              td(width='1px')
                 button.btn.btn-link.btn-xs(value='{{model}}' onclick="preview(value)" onmouseover="" style="cursor: pointer;")
                   img(style="margin-top: 2px;" src="assets/ic_visibility_grey_24dp_1x.png")
               td(width='1px')
@@ -160,8 +164,9 @@ html
                   img(style="margin-top: 4px;" src="assets/ic_edit_grey_24dp_1x.png")
               td(width='1px')
                 //- a(ng-href="/delete?_id={{model._id}}",onclick="return confirm('Are you sure to delete this service?');")
-                a(tyle="cursor: pointer;" ng-click="deleteService(model._id,model.name,model.method,model.url)")
+                a(style="cursor: pointer;" ng-click="deleteService(model._id,model.name,model.method,model.url)")
                   img(style="margin-top: 3px;" src="assets/ic_delete_grey_24dp_1x_mid.png")
+
 
     script(src='js/jquery.min.js')
     //- script(src='bower_components/angular/angular.js')
@@ -173,7 +178,6 @@ html
       $("#toggle").click(function(){
       $("hidden").toggle();
       });
-    script.
       $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();   
       });
@@ -196,7 +200,6 @@ html
         model.response = model.response.replace(new RegExp("\n", "g"), '<br/>')
       else //model.type=='xml'
         model.response = model.response.replace(new RegExp("<", "g"), '&lt;')
-      console.log('response : '+model.response)
       swal({
         title: model.name,
         html: '<b>method : </b>' + model.method + '<br/><b>url : </b>' + model.url + '<div style="text-align:left;">' + model.response + '</div>',

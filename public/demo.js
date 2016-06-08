@@ -11,7 +11,7 @@ app.controller('MainCtrl', function ($attrs, $scope, $http, JSONFormatterConfig)
 });
 app.controller('GroupCtrl', function ($scope, $http) {
   $scope.selection = []
-  let id = document.getElementById("id");
+  var id = document.getElementById("id");
   if(id)
   	id = id.value
   else

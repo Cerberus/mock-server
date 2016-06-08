@@ -29,6 +29,26 @@ app.controller('MainController',function ($scope, $http) {
       }
     })
   }
+  $scope.copy = function copy(path){
+    var aux = document.createElement("input");
+    // Get the text from the element passed into the input
+    aux.setAttribute("value",location.host + path);
+    // Append the aux input to the body
+    document.body.appendChild(aux);
+    // Highlight the content
+    aux.select();
+    // Execute the copy command
+    document.execCommand("copy");
+    // Remove the input from the body
+    document.body.removeChild(aux);
+    swal({
+      title: 'Copy path',
+      text: location.host + path,
+      timer: 700,
+      confirmButtonColor: '#67cbb4',
+      type:'success'
+    })
+  }
 })
 
 app.controller('GroupController',function ($scope) {
