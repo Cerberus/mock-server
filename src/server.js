@@ -365,7 +365,13 @@ app.get('/deleteAISapp', function (req, res) {
       if (err) {
         res.status(500).send(err)
       } else {
-        res.redirect('/AISapp')
+        Quicklink.find({}).exec(function (err, results) {
+          if (err) {
+            res.status(500).send(err)
+          } else {
+            res.render('quicklink',{results})
+          }
+        })
       }
     })
 });
@@ -378,7 +384,13 @@ app.post('/AISapp', function (req, res) {
     quicklink.save(function(err){
       if(err)
         return res.status(500).send(err)
-      res.redirect('/AISapp')
+      Quicklink.find({}).exec(function (err, results) {
+        if (err) {
+          res.status(500).send(err)
+        } else {
+          res.render('quicklink',{results})
+        }
+      })
     })
 });
 
