@@ -7,6 +7,7 @@ const db = require('./db')() // invoke db.
 const { APP_PORT } = require('./config');
 const Model = require('./models/endpoint.model.js');
 const Group = require('./models/group.model.js');
+const Quicklink = require('./models/quicklink.model.js')
 const Log = require('./models/log.model.js');
 var Promise = require('bluebird');
 
@@ -349,8 +350,40 @@ app.get('/deleteGroup', (req, res) => { //route to delete Group
   });
 })
 
+app.get('/AISapp', function (req, res) {
+    Quicklink.find({}).exec(function (err, results) {
+      if (err) {
+        res.status(500).send(err)
+      } else {
+        res.render('quicklink',{results})
+      }
+    })
+});
+
+app.get('/deleteAISapp', function (req, res) {
+    Quicklink.remove({_id:req.query._id}).exec(function (err, results) {
+      if (err) {
+        res.status(500).send(err)
+      } else {
+        res.redirect('/AISapp')
+      }
+    })
+});
+
+app.post('/AISapp', function (req, res) {
+    if(!(req.body.name&&req.body.link))
+      return res.redirect('/AISapp')
+
+    var quicklink = new Quicklink(req.body)
+    quicklink.save(function(err){
+      if(err)
+        return res.status(500).send(err)
+      res.redirect('/AISapp')
+    })
+});
+
 // -------------log-------------
-app.get('/log', function (req, res, next) {
+app.get('/log', function (req, res) {
     Log.find({}).exec(function (err, results) {
       if (err) {
         res.status(500).send(err)
