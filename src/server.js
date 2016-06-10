@@ -97,9 +97,6 @@ app.get('/data', function(req, res) {
     Model.find({
     }).lean().exec(
     function (err,models) {
-      new Promise(function(resolve, reject){
-        resolve()
-      }).then(function () {
         models.forEach(function (model){//pretty json for quick view
           if(model.type === 'json')
             model.response = JSON.stringify(JSON.parse(model.response),null, 2)
@@ -114,10 +111,9 @@ app.get('/data', function(req, res) {
               
           })
         });
-      }).then(function() {
-        setTimeout(function(){res.json(models)},300);
-      })
+      setTimeout(function(){res.json(models)},300);
     })
+
 });
 
 app.get('/allGroup', function(req, res){
