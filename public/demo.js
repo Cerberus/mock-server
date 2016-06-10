@@ -21,6 +21,8 @@ app.controller('GroupCtrl', function ($scope, $http) {
 			  angular.forEach($scope.cbg,function(cb,index){
 			  	if(cb.check===true)
 			  		$scope.selection.push(cb._id)
+          document.getElementById("group").value = $scope.selection
+          // console.log('value : ', document.getElementById("group").value);
 			  })
   });
   $scope.toggleSelection = function toggleSelection(_id) {
@@ -34,6 +36,8 @@ app.controller('GroupCtrl', function ($scope, $http) {
         $scope.selection.push(_id);
       }
       document.getElementById("group").value = $scope.selection
+      // console.log('value : ', document.getElementById("group").value);
+
   };
 });
 angular.bootstrap(document.getElementById("App2"), ['myApp']);

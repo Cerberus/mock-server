@@ -73,7 +73,7 @@ app.set('view engine','jade')
 
 app.use(express.static('./public'))
 
-app.get('/', (req, res) => { //route to list all
+app.get('/__', (req, res) => { //route to list all
   res.render('index')
 })
 
@@ -115,7 +115,7 @@ app.get('/data', function(req, res) {
           })
         });
       }).then(function() {
-        setTimeout(function(){res.json(models)},120);
+        setTimeout(function(){res.json(models)},300);
       })
     })
 });
@@ -149,6 +149,7 @@ app.get('/checkBoxGroup', function(req, res){
 
 app.post('/ServiceList', function(req, res) {
     // console.log('req.body._id : ' + req.body._id);
+    console.log('/ServiceList');
     Model.find({},
     function (err,models) {
       models.forEach(function (model){//pretty json for quick view
@@ -201,7 +202,7 @@ app.get('/delete', (req, res) => { //route to delete document
       {multi:true}).exec(function (err,result){
         if(err)
           return res.send('Fail to clear id group.');
-        return res.redirect('/')
+        return res.redirect('/__')
       })
     } else {
       return res.send('Fail to delete.');
@@ -215,6 +216,7 @@ app.post('/', (req, res) => { //route to add document
     return res.send('Detect wrong JSON format. Back to edit JSON')
   if(req.body.url.charAt(0)!='/')
     req.body.url = '/' + req.body.url
+  
   // req.body.group.forEach(function(groudId){
   //   console.log(groundId);
   // })
@@ -243,7 +245,7 @@ app.post('/', (req, res) => { //route to add document
           }
         })
       })
-      return res.redirect('/')
+      return res.redirect('/__')
       })
     }
     else
@@ -266,12 +268,15 @@ app.post('/update', (req, res) => { //route to update document
     if (err)
       return res.send('Error to update, Duplicate name.')
     var checkList = req.body.group.split(',')
+    console.log('checkList : ' + checkList);
     Group.find({},{_id:true}).exec(function(err, groups)
     {
       if(err)
         return res.send('Complete to add, but error to add to group')
       groups.forEach(function(group){
         let id = group._id.toString()
+        console.log('checkList.indexOf(id) = ', checkList.indexOf(id));
+        console.log('id : '+ id);
         if(checkList.indexOf(id) > -1){
           Group.update({_id:id},{ $addToSet : { list: model._id}}).exec()
         } else {
@@ -279,7 +284,7 @@ app.post('/update', (req, res) => { //route to update document
         }
       })
     })
-    return res.redirect('/')
+    return res.redirect('/__')
   });
 })
 
