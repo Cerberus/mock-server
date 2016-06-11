@@ -74,10 +74,11 @@ app.set('view engine','jade')
 app.use(express.static('./public'))
 
 app.get('/__', (req, res) => { //route to list all
-  res.render('index')
+  return res.render('index')
 })
 
 app.get('/groupList', (req, res) => { //route to list all
+  // console.log('/groupList');
   Group.find({}).populate('list').exec((err, groups) => {
       groups.forEach(function (group){//pretty json for quick view
         for(let list of group.list){
@@ -87,13 +88,13 @@ app.get('/groupList', (req, res) => { //route to list all
       })
       if(err)
         return res.send('Error to show group list')
-      res.render('group',{groups})
+      return res.render('group',{groups})
   })
 })
 
 
 app.get('/data', function(req, res) {
-
+    // console.log('/data');
     Model.find({
     }).lean().exec(
     function (err,models) {
@@ -111,12 +112,13 @@ app.get('/data', function(req, res) {
               
           })
         });
-      setTimeout(function(){res.json(models)},300);
+      return setTimeout(function(){res.json(models)},300);
     })
 
 });
 
 app.get('/allGroup', function(req, res){
+    // console.log('/allGroup');
     Group.find({},{name:true,_id:false}).lean().exec(function(err, groups) {
       // groups.forEach(function(group) {
       //   group.on = false
@@ -145,7 +147,7 @@ app.get('/checkBoxGroup', function(req, res){
 
 app.post('/ServiceList', function(req, res) {
     // console.log('req.body._id : ' + req.body._id);
-    console.log('/ServiceList');
+    // console.log('/ServiceList');
     Model.find({},
     function (err,models) {
       models.forEach(function (model){//pretty json for quick view
@@ -154,7 +156,7 @@ app.post('/ServiceList', function(req, res) {
       })
       if(err)
         return res.json({})
-      res.json(models)
+      return res.json(models)
     })
 });
 

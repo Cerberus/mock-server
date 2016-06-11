@@ -8,12 +8,18 @@ app.directive('tooltipLoader', function() {
   };
 });
 app.controller('MainController',function ($scope, $http) {
-	$http.get('/data').then(function(res){
-        $scope.models = res.data;
+  $http.get('/data',{ cache: false }).then(function(res){
+      // console.log('Before assign--------');
+      // console.log('$scope.model : ' + $scope.models);
+      // console.log('res.data     : ' + res.data.length);
+      $scope.models = res.data;
+      // console.log('After assign--------');
+      // console.log('$scope.model : ' + $scope.models.length);
+      // console.log('res.data     : ' + res.data.length);
   });
-  $http.get('/allGroup').then(function(res){
-        $scope.groups = res.data;
-        $scope.groups.unshift(new Object({name:""}))
+  $http.get('/allGroup',{ cache: false }).then(function(res){
+      $scope.groups = res.data;
+      $scope.groups.unshift(new Object({name:""}))
   });
   $scope.deleteService = function(_id, name, method, url){
     swal({
@@ -73,7 +79,7 @@ app.controller('checkList',function ($scope, $http) {
   // $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
   //,"_id="+document.getElementById('_id').value
   var checkedList = document.getElementById('list').value
-  $http.post('/ServiceList').then(function(res){
+  $http.post('/ServiceList',{ cache: false }).then(function(res){
         $scope.models = res.data;
         $scope.models.forEach(function(model){
           if(checkedList.indexOf(model._id) > -1)
@@ -108,7 +114,7 @@ app.controller('logContoller',function ($scope, $http, $interval) {
     }
 
   getData = function() {
-    $http.get('/log').then(function(res){
+    $http.get('/log',{ cache: false }).then(function(res){
           $scope.logs = res.data;
     })
   }

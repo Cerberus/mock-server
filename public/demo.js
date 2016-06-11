@@ -16,7 +16,7 @@ app.controller('GroupCtrl', function ($scope, $http) {
   	id = id.value
   else
   	id = ""
-  $http.get('/checkBoxGroup?_id=' + id ).then(function(res){
+  $http.get('/checkBoxGroup?_id=' + id ,{ cache: false }).then(function(res){
         $scope.cbg = res.data;
 			  angular.forEach($scope.cbg,function(cb,index){
 			  	if(cb.check===true)
