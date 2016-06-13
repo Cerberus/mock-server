@@ -113,7 +113,7 @@ html
             // SUBMIT
             .form-group
               .col-sm-9.col-sm-offset-2
-                button.btn.btn-default(type='reset') Clear
+                button.btn.btn-default(button type="button" id="close") Back
                 span 
                 button.btn.btn-primary.disabled(id='submit' type='submit' disabled) Submit
                 p
@@ -177,6 +177,9 @@ html
       });
       $("#toggle").click(function(){
       $("hidden").toggle();
+      });
+      $("#close").click(function(){
+      $("hidden").hide();
       });
       $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();   

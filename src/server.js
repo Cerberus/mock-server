@@ -281,8 +281,8 @@ app.post('/update', (req, res) => { //route to update document
           Group.update({_id:id},{ $pull : { list: model._id}}).exec()
         }
       })
+      return res.redirect('/edit?name=' + req.body.name)
     })
-    return res.redirect('/__')
   });
 })
 
