@@ -120,7 +120,8 @@ html
                   span(id="status")
       br
       br
-      div#App2(ng-app='myApp', ng-controller='MainController')
+    div#App2(ng-app='myApp', ng-controller='MainController')
+      .container
         .well
           .form-group
             .col-sm-4
@@ -131,15 +132,15 @@ html
               select.form-control(ng-model='search.belongGroup')
                 option(ng-repeat='group in groups') {{group.name}}
           br
-        
-        table.table.table-striped.table-hover(style="width:100%")
+      .container-fluid
+        table.table.table-striped.table-hover(style="width:85%" align="center")
           thead
             tr
               th #
-              th Name
+              th(style="min-width:350px;max-width:400px;") Name
               th METHOD
               th URL
-              th
+              th(style="min-width:400px;")
                 center Response
               th
               th
@@ -148,10 +149,10 @@ html
           tbody
             tr(ng-repeat="model in models | filter : search")
               td(width='3%') {{$index+1}}
-              td(width='12%') {{model.name}}
+              td(style="min-width:350px;max-width:400px;") {{model.name}}
               td(width='7%') {{model.method}}
-              td(width='15%') {{model.url}}
-              td(width='400px')
+              td(width='20%') {{model.url}}
+              td(style="min-width:400px;")
                 | {{model.response}}
               td(width='1px')
                 a(style="cursor: pointer;" ng-click="copy(model.url)")
@@ -207,7 +208,8 @@ html
         title: model.name,
         html: '<b>method : </b>' + model.method + '<br/><b>url : </b>' + model.url + '<div style="text-align:left;">' + model.response + '</div>',
         confirmButtonText: 'Cool',
-        confirmButtonColor: '#67cbb4'
+        confirmButtonColor: '#67cbb4',
+        width: 800
       })
       }
     script.
