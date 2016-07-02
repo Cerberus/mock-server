@@ -51,7 +51,7 @@ app.controller('MainController',function ($scope, $http) {
       title: 'Copy path',
       text: location.host + path,
       timer: 700,
-      confirmButtonColor: '#67cbb4',
+      showConfirmButton: false,
       type:'success'
     })
   }

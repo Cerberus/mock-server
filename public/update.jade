@@ -2,6 +2,8 @@ html
   head
     style
       include css/bootstrap.css
+      include bower_components/sweetalert2/dist/sweetalert2.min.css
+    script(src="bower_components/sweetalert2/dist/sweetalert2.min.js")
     script(src='bower_components/angular/angular.js')
     script(src='bower_components/angular-sanitize/angular-sanitize.js')
     link(rel='stylesheet', href='dist/json-formatter.min.css')
@@ -27,7 +29,7 @@ html
               a(href='/log.html')
                 b Log history
     .container
-      form.form-horizontal(name='form', method='POST', action='/update')
+      form.form-horizontal(id="myForm", name='form', method='POST', action='/update')
         fieldset(ng-app='demo')
           center
             legend Update form
@@ -111,6 +113,8 @@ html
                 span(id="status")
     //- script(type='text/javascript',src='lib/angular-ui-router/release/angular-ui-router.min.js')
     //- script(type='text/javascript',src='js/ui-bootstrap-tpls.min.js')
+    script(src='js/jquery.min.js')
+    script(src='js/jquery.form.js')
     script(type='text/javascript',src='lib/app.js')
     script.
       function clean(el){
@@ -153,4 +157,29 @@ html
       function show(){
         document.getElementById('jsonFormatter').className = ''
       }
+    script.
+      $('#myForm').ajaxForm({
+        url : '/update',
+        dataType : 'json',
+        success : function (response) {
+        if(response.success)
+          {
+            swal({
+              title: response.message,
+              type: 'success',
+              showConfirmButton: false,
+              timer: 2000
+            })
+          }
+        else
+          {
+            swal({
+              title: response.message,
+              type: 'warning',
+              confirmButtonColor: '#67cbb4',
+              confirmButtonText: 'OK'
+            })
+          }
+        }
+      })
 

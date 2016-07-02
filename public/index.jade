@@ -37,7 +37,7 @@ html
         button.btn.btn-primary(button id="toggle")
           b ✚ New service
       hidden
-        form.form-horizontal(name='form', method='POST',action='/')
+        form.form-horizontal(id="myForm" name='form', method='POST',action='/')
           fieldset(ng-app='demo')
             center
               legend New form
@@ -170,6 +170,7 @@ html
 
 
     script(src='js/jquery.min.js')
+    script(src='js/jquery.form.js')
     //- script(src='bower_components/angular/angular.js')
     script(src='js/bootstrap.js')
     script(type="text/javascript").
@@ -237,3 +238,35 @@ html
       $('.form-control').on('focus blur', function (e) {
       $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
       }).trigger('blur');
+    script.
+      $('#myForm').ajaxForm({
+        url : '/',
+        dataType : 'json',
+        success : function (response) {
+        if(response.success)
+          {
+            swal({
+              title: response.message,
+              text: 'What do you would like to do next?\n1).Reload this page\n2).Add more services',
+              type: 'success',
+              confirmButtonColor: '#67cbb4',
+              showConfirmButton: true,
+              confirmButtonText: 'Reload',
+              showCancelButton: true,
+              cancelButtonText: 'Add more'
+            }).then(function(isConfirm) {
+              if (isConfirm) {
+                window.location.href = "/__";
+              }
+            })
+          }
+        else
+          {
+            swal({
+              title: response.message,
+              type: 'warning',
+              confirmButtonColor: '#67cbb4'
+            })
+          }
+        }
+      })

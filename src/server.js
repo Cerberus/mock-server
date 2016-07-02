@@ -211,7 +211,7 @@ app.get('/delete', (req, res) => { //route to delete document
 app.post('/', (req, res) => { //route to add document
   
   if(req.body.type==='json'&&!check(req.body.response))
-    return res.send('Detect wrong JSON format. Back to edit JSON')
+    return res.json({"success":false,"message": 'Detect wrong JSON format'});
   if(req.body.url.charAt(0)!='/')
     req.body.url = '/' + req.body.url
   
@@ -228,12 +228,12 @@ app.post('/', (req, res) => { //route to add document
         model.response = JSON.stringify(JSON.parse(req.body.response))
       model.save(function (err, model) {
       if(err)
-        return res.send('Error to add, Not complete info or Duplicate name.')
+        return res.json({"success":false,"message": 'Error to add\nDuplicate name'});
       var checkList = req.body.group.split(',')
       Group.find({},{_id:true}).exec(function(err, groups)
       {
         if(err)
-          return res.send('Complete to add, but error to add to group')
+          return res.json({"success":true,"message": 'This service has been added\nBut not belong any group'});
         groups.forEach(function(group){
           let id = group._id.toString()
           if(checkList.indexOf(id) > -1){
@@ -243,47 +243,63 @@ app.post('/', (req, res) => { //route to add document
           }
         })
       })
-      return res.redirect('/__')
+      return res.json({"success":true,"message": 'Add complete & ready to use.'});
       })
     }
     else
-      return res.send('Duplicate Method or url')
+      return res.json({"success":false,"message": 'Error to add.\nDuplicate Method and url'});
   })
 })
 
 app.post('/update', (req, res) => { //route to update document
-
   if(req.body.type==='json'&&!check(req.body.response))
-    return res.send('Detect wrong JSON format. Back to edit JSON')
+    return res.json({"success":false,"message": 'Detect wrong JSON format.'});
   if(req.body.type === 'json')
     req.body.response = JSON.stringify(JSON.parse(req.body.response))
   if(req.body.url.charAt(0)!='/')
     req.body.url = '/' + req.body.url
   Model
-  .findOneAndUpdate({_id:req.body._id}
-  ,req.body,
-  function (err, model){
-    if (err)
-      return res.send('Error to update, Duplicate name.')
-    var checkList = req.body.group.split(',')
-    console.log('checkList : ' + checkList);
-    Group.find({},{_id:true}).exec(function(err, groups)
+  .findOne({url: req.body.url, method: req.body.method}
+  ,function (err, result) {
+    if(err)
+      return res.json({"success":false,"message": 'Error to update\nSomething went wrong'});
+    else if(!result || (result._id == req.body._id))
     {
-      if(err)
-        return res.send('Complete to add, but error to add to group')
-      groups.forEach(function(group){
-        let id = group._id.toString()
-        console.log('checkList.indexOf(id) = ', checkList.indexOf(id));
-        console.log('id : '+ id);
-        if(checkList.indexOf(id) > -1){
-          Group.update({_id:id},{ $addToSet : { list: model._id}}).exec()
-        } else {
-          Group.update({_id:id},{ $pull : { list: model._id}}).exec()
+      Model
+      .findOneAndUpdate({_id:req.body._id}
+      ,req.body,
+      function (err, model){
+        if (err)
+          return res.json({"success":false,"message": 'Error to update\nDuplicate name'});
+        else
+        {
+          var checkList = req.body.group.split(',')
+          console.log('checkList : ' + checkList);
+          Group.find({},{_id:true}).exec(function(err, groups)
+          {
+            if(err)
+              return res.json({"success":true,"message": 'This service has been updated\nBut not belong any group'});
+            groups.forEach(function(group){
+              let id = group._id.toString()
+              console.log('checkList.indexOf(id) = ', checkList.indexOf(id));
+              console.log('id : '+ id);
+              if(checkList.indexOf(id) > -1){
+                Group.update({_id:id},{ $addToSet : { list: model._id}}).exec()
+              } else {
+                Group.update({_id:id},{ $pull : { list: model._id}}).exec()
+              }
+            })
+            // return res.redirect('/edit?name=' + req.body.name)
+            return res.json({"success":true,"message": 'This service has been updated'});
+          })
         }
-      })
-      return res.redirect('/edit?name=' + req.body.name)
-    })
-  });
+      });
+    }
+    else
+    {
+      return res.json({"success":false,"message": 'Error to update\nDuplicate Method and url'});
+    }
+  })
 })
 
 // groups.forEach(function (group){
@@ -336,7 +352,7 @@ app.post('/modifyGroup', (req, res) => { //add-update group document
     function (err, result){
       if (result)
         return res.redirect('/groupList')
-      return res.send('Error to update, may Duplicate name.')
+      return res.send('Error to update\nmay Duplicate name.')
       });
   }
 })
@@ -399,7 +415,7 @@ app.post('/AISapp', function (req, res) {
 
 // -------------log-------------
 app.get('/log', function (req, res) {
-    Log.find({}).limit(50).exec(function (err, results) {
+    Log.find({}).sort({'date': -1}).limit(50).exec(function (err, results) {
       if (err) {
         res.status(500).send(err)
       } else {
