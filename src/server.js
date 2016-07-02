@@ -399,7 +399,7 @@ app.post('/AISapp', function (req, res) {
 
 // -------------log-------------
 app.get('/log', function (req, res) {
-    Log.find({}).exec(function (err, results) {
+    Log.find({}).limit(50).exec(function (err, results) {
       if (err) {
         res.status(500).send(err)
       } else {
