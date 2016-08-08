@@ -26,6 +26,11 @@
 </nav>
 <body ng-app='myApp', ng-controller='logContoller as app'>
   <div class="container">
+    <h5><b>First aid</b></h5>
+    <p>1).ถ้าสามารถเข้าหน้าเว็บได้แต่ไม่สามารถเชื่อมต่อ mongodb ได่(permission OS deny) ให้reboot server</p>
+    <p>2).รันmongoด้วยคำสั่ง mongod</p>
+    <p>3).รันmock serverด้วยการเข้าไปfolder nextzy-mock-server สั่ง pm2 start src/server.js </p>
+    <p><b>Backup database</b> ด้วยคำสั่ง mongodump --db nextzy_json_mock -o backup_name</p>
     <h5><b>Log History</b></h5>
     <table class="table table-striped">
       <thead>

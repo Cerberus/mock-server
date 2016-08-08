@@ -98,7 +98,7 @@ app.get('/data', function(req, res) {
     Model.find({
     }).lean().exec(
     function (err,models) {
-        models.forEach(function (model){//pretty json for quick view
+        models.forEach(function (model, index){//pretty json for quick view
           if(model.type === 'json')
             model.response = JSON.stringify(JSON.parse(model.response),null, 2)
 
@@ -109,10 +109,11 @@ app.get('/data', function(req, res) {
             belongGroup.forEach(function(group) {
               model.belongGroup.push(group.name)
             })
-              
           })
+          if(index+1 == models.length){
+            return setTimeout(function(){res.json(models)},300);
+          }
         });
-      return setTimeout(function(){res.json(models)},300);
     })
 
 });
@@ -423,6 +424,23 @@ app.get('/log', function (req, res) {
       }
     })
 });
+//db.collection.find().limit(1).sort({$natural:-1})
+// limit function (20 records)
+// app.get('/last', function (req, res) {
+//     Log.count({},function (err,count){
+//       if(count<20)
+//         return res.send('Not remove');;
+//       Log.find({}).limit(1).sort({$natural:1}).exec(function (err, result) {
+//         Log.remove({_id:result[0]._id}).exec(function (err, oldFile) {
+//           if (err) {
+//             res.status(500).send(err);
+//           } else {
+//             res.send('Remove complete.');
+//           }
+//         })
+//       });
+//     })
+// });
 // -------------reponse-------------
 app.get('*', (req, res) => {
   const path = req.path;
@@ -431,6 +449,20 @@ app.get('*', (req, res) => {
     obj.save(function (err, obj) {
       if (err) {
         res.status(500).send(err);
+      } else {
+        Log.count({},function (err,count){
+          if(count<=50)
+            return;
+          Log.find({}).limit(1).sort({$natural:1}).exec(function (err, result) {
+            Log.remove({_id:result[0]._id}).exec(function (err, oldFile) {
+              if (err) {
+                res.status(500).send(err);
+              } else {
+                //res.send('Remove complete.');
+              }
+            })
+          });
+        })
       }
     })
   Model
@@ -457,6 +489,20 @@ app.post('*', (req, res) => {
     obj.save(function (err, obj) {
       if (err) {
         res.status(500).send(err);
+      } else {
+        Log.count({},function (err,count){
+          if(count<=50)
+            return;
+          Log.find({}).limit(1).sort({$natural:1}).exec(function (err, result) {
+            Log.remove({_id:result[0]._id}).exec(function (err, oldFile) {
+              if (err) {
+                res.status(500).send(err);
+              } else {
+                //res.send('Remove complete.');
+              }
+            })
+          });
+        })
       }
     })
   Model
@@ -483,6 +529,20 @@ app.put('*', (req, res) => {
     obj.save(function (err, obj) {
       if (err) {
         res.status(500).send(err);
+      } else {
+        Log.count({},function (err,count){
+          if(count<=50)
+            return;
+          Log.find({}).limit(1).sort({$natural:1}).exec(function (err, result) {
+            Log.remove({_id:result[0]._id}).exec(function (err, oldFile) {
+              if (err) {
+                res.status(500).send(err);
+              } else {
+                //res.send('Remove complete.');
+              }
+            })
+          });
+        })
       }
     })
   Model
@@ -508,6 +568,20 @@ app.delete('*', (req, res) => {
     obj.save(function (err, obj) {
       if (err) {
         res.status(500).send(err);
+      } else {
+        Log.count({},function (err,count){
+          if(count<=50)
+            return;
+          Log.find({}).limit(1).sort({$natural:1}).exec(function (err, result) {
+            Log.remove({_id:result[0]._id}).exec(function (err, oldFile) {
+              if (err) {
+                res.status(500).send(err);
+              } else {
+                //res.send('Remove complete.');
+              }
+            })
+          });
+        })
       }
     })
   const path = req.path;
